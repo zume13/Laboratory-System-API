@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="../Application/Application.csproj" />
+  <Project Path="../Domain/Domain.csproj" />
+  <Project Path="../Infrastructure/Infrastructure.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.csproj" Id="ca5819ca-d781-4ede-a998-5b6f227966d4" />
   <Project Path="Laboratory-Management-API.csproj" />
 </Solution>
