@@ -1,0 +1,6 @@
+services:
+  laboratory-management-api:
+    image: ${DOCKER_REGISTRY-}laboratorymanagementapi
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
