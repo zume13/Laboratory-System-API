@@ -1,11 +1,11 @@
-﻿using Application.Abstractions.Repositories.Base;
+﻿using Application.Abstractions.Base;
 using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Primitives;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public abstract class Repository<TAggregate> : IRepository<TAggregate> where TAggregate : AggregateRoot
+    public abstract class Repository<TAggregate> : Application.Abstractions.Base.Repository<TAggregate> where TAggregate : AggregateRoot
     {
         protected readonly ApplicationDbContext _dbContext;
 

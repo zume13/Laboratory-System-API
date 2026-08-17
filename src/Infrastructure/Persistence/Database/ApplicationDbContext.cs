@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Repositories.Base;
+﻿using Application.Abstractions.Base;
 using Domain.Aggregates.Appointment;
 using Domain.Aggregates.AppointmentSlot;
 using Domain.Aggregates.Communications.Notification;

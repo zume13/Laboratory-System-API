@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Shared;
 
-namespace Application.Abstractions.Repositories.Base
+namespace Application.Abstractions.Base
 {
     public interface IUnitOfWork
     {

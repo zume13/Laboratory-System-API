@@ -1,9 +1,6 @@
 ﻿using Domain.Aggregates.Communications.Enums;
 using LMS.SharedKernel.Primitives;
 using SharedKernel.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Aggregates.Appointment
 {
