@@ -5,7 +5,7 @@ using SharedKernel.Primitives;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public abstract class Repository<TAggregate> : Application.Abstractions.Base.Repository<TAggregate> where TAggregate : AggregateRoot
+    public abstract class Repository<TAggregate> : Application.Abstractions.Base.IRepository<TAggregate> where TAggregate : AggregateRoot
     {
         protected readonly ApplicationDbContext _dbContext;
 
