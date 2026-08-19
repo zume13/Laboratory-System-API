@@ -3,7 +3,8 @@ using Domain.Aggregates.Monitoring.SystemConfig;
 
 namespace Application.Abstractions.Repositories
 {
-    public interface ISystemConfigRepository : Repository<SystemConfig>
+    public interface ISystemConfigRepository : IRepository<SystemConfig>
     {
+        Task<SystemConfig?> GetByKeyAsync(string key, CancellationToken cancellationToken = default);
     }
 }

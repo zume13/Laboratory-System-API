@@ -3,7 +3,9 @@ using Domain.Aggregates.Laboratory.TestCategory;
 
 namespace Application.Abstractions.Repositories
 {
-    public interface ITestCategoryRepository : Repository<TestCategory>
+    public interface ITestCategoryRepository : IRepository<TestCategory>
     {
+        Task<TestCategory?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<List<TestCategory>> GetActiveAsync(CancellationToken cancellationToken = default);
     }
 }
