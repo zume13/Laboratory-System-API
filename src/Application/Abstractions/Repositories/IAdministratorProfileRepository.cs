@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Base;
 using Domain.Aggregates.Identity.AdministratorProfile;
 
-namespace Application.Abstractions.Repositories
+namespace Application.Abstractions.Repositories.Identity
 {
     public interface IAdministratorProfileRepository : IRepository<AdministratorProfile>
     {

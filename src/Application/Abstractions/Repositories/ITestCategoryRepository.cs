@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Base;
 using Domain.Aggregates.Laboratory.TestCategory;
 
-namespace Application.Abstractions.Repositories
+namespace Application.Abstractions.Repositories.Laboratory
 {
     public interface ITestCategoryRepository : IRepository<TestCategory>
     {
