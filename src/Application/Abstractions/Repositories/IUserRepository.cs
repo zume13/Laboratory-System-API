@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Base;
-using Domain.Aggregates.Identity.User;
+using Domain.Aggregates.Identity.UserProfile;
 
-namespace Application.Abstractions.Repositories.Identity
+namespace Application.Abstractions.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {

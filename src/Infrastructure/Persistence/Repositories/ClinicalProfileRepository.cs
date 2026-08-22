@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Domain.Aggregates.Identity.ClinicalStaffProfile;
-using Domain.Aggregates.Identity.User.Enums;
+using Domain.Aggregates.Identity.UserProfile.Enums;
 using Infrastructure.Persistence.Database;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

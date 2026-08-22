@@ -1,5 +1,4 @@
-﻿using Application.Abstractions.Base;
-using Infrastructure.Persistence.Database;
+﻿using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Primitives;
 

@@ -1,9 +1,9 @@
-﻿using Domain.ValueObjects;
-using PDDLPortal.Domain.ValueObjects;
+﻿using Domain.Aggregates.Identity.UserProfile.Enums;
+using Domain.ValueObjects;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
 
-namespace Domain.Aggregates.Identity.User
+namespace Domain.Aggregates.Identity.UserProfile
 {
     public class User : AggregateRoot
     {
@@ -12,13 +12,17 @@ namespace Domain.Aggregates.Identity.User
             Name firstName,
             Name lastName,
             Email email,
-            string hashedPassword)
+            PhoneNumber phone,
+            string hashedPassword,
+            UserRole role)
             : base(id)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+            PhoneNumber = phone;
             HashedPassword = hashedPassword;
+            Role = role;
         }
 
         public Name FirstName { get; private set; }
@@ -27,9 +31,11 @@ namespace Domain.Aggregates.Identity.User
 
         public Email Email { get; private set; }
 
+        public PhoneNumber PhoneNumber { get; private set; }
+
         public string HashedPassword { get; private set; }
 
-        public Guid RoleId { get; private set; }
+        public UserRole Role { get; private set; } 
 
         public DateTime? LastLoginAt { get; private set; }
 
@@ -37,7 +43,9 @@ namespace Domain.Aggregates.Identity.User
             Name firstName,
             Name lastName,
             Email email,
-            string hashedPassword)
+            PhoneNumber phone,
+            string hashedPassword,
+            UserRole role)
         {
             if (string.IsNullOrWhiteSpace(firstName.value))
                 return GeneralErrors.General.Empty(nameof(firstName));
@@ -56,15 +64,14 @@ namespace Domain.Aggregates.Identity.User
                 firstName,
                 lastName,
                 email,
-                hashedPassword);
+                phone,  
+                hashedPassword,
+                role);
         }
 
-        public Result AssignToRole(Guid roleId)
+        public Result AssignToRole(UserRole role)
         {
-            if (roleId == Guid.Empty)
-                return GeneralErrors.General.Empty(nameof(roleId));
-
-            RoleId = roleId;
+            Role = role;
 
             return Result.Success();
         }

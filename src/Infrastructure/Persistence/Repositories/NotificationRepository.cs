@@ -3,6 +3,7 @@ using Domain.Aggregates.Communications.Notification;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Persistence.Database;
 using Infrastructure.Persistence.Repositories;
+using Application.Abstractions.Repositories;
 
 namespace Infrastructure.Persistence.Repositories
 {

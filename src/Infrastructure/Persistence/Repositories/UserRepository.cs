@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
-using Domain.Aggregates.Identity.User;
+using Domain.Aggregates.Identity.UserProfile;
 using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 

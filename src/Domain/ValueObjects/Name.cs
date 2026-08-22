@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Shared;
 
-namespace PDDLPortal.Domain.ValueObjects
+namespace Domain.ValueObjects
 {
 
     public sealed record Name

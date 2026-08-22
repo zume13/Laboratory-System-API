@@ -1,4 +1,4 @@
-﻿using Domain.Aggregates.Identity.User;
+﻿using Domain.Aggregates.Identity.UserProfile;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,7 +24,7 @@ namespace Infrastructure.Persistence.EntityConfiguration
             });
 
             builder.Property(x => x.HashedPassword).IsRequired();
-            builder.Property(x => x.RoleId);
+            builder.Property(x => x.Role).IsRequired().HasConversion<int>();
             builder.Property(x => x.LastLoginAt);
         }
     }

@@ -16,7 +16,7 @@ namespace Domain.Aggregates.RefreshToken
         public Guid UserId { get; private set; }
         public DateTime ExpiresAt { get; private set; }
         public DateTime? RevokedAt { get; private set; }
-        public string? ReplacedByTokenHash { get; private set; }
+        public Guid? ReplacedByTokenId { get; private set; }
 
         public static ResultT<RefreshToken> Create(string tokenHash, Guid userId, DateTime expiresAt)
         {
@@ -26,10 +26,12 @@ namespace Domain.Aggregates.RefreshToken
             return ResultT<RefreshToken>.Success(new RefreshToken(tokenHash, userId, expiresAt));
         }
 
-        public void Revoke(string? replacedByTokenHash)
+        public void Revoke(Guid? replacedByTokenId)
         {
             RevokedAt = DateTime.UtcNow;
-            ReplacedByTokenHash = replacedByTokenHash;
+            ReplacedByTokenId = replacedByTokenId;
         }
+
+        public bool isActive() => RevokedAt is null && ExpiresAt > DateTime.UtcNow;
     }
 }

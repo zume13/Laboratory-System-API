@@ -1,7 +1,9 @@
-﻿using Application.Abstractions.Base;
+﻿using Application.Abstractions.Auth;
+using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
 using Infrastructure.Persistence.Database;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,10 @@ namespace Infrastructure
             services.AddScoped<ISystemConfigRepository, SystemConfigRepository>();
             services.AddScoped<ITestCategoryRepository, TestCategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

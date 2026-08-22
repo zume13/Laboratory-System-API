@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Base;
 using Domain.Aggregates.Identity.ClinicalStaffProfile;
-using Domain.Aggregates.Identity.User.Enums;
+using Domain.Aggregates.Identity.UserProfile.Enums;
 
 namespace Application.Abstractions.Repositories
 {
@@ -11,3 +11,4 @@ namespace Application.Abstractions.Repositories
         Task<List<ClinicalStaffProfile>> GetActiveAsync(CancellationToken cancellationToken = default);
     }
 }
+

@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.Monitoring.SystemConfig;
+﻿using Application.Abstractions.Repositories;
+using Domain.Aggregates.Monitoring.SystemConfig;
 using Infrastructure.Persistence.Database;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

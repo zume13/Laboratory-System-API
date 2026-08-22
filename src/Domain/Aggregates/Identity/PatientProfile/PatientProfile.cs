@@ -10,12 +10,14 @@ namespace Domain.Aggregates.Identity.PatientProfile
             Guid id,
             Guid userId,
             DateTime dateOfBirth,
-            Sex sex)
+            Sex sex,
+            bool consent)
             : base(id)
         {
             UserId = userId;
             DateOfBirth = dateOfBirth;
             Sex = sex;
+            ConsentAccepted = consent;
         }
 
         public Guid UserId { get; private set; }
@@ -31,7 +33,8 @@ namespace Domain.Aggregates.Identity.PatientProfile
         public static ResultT<PatientProfile> Create(
             Guid userId,
             DateTime dateOfBirth,
-            Sex sex)
+            Sex sex,
+            bool consent)
         {
             if (userId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(userId));
@@ -40,7 +43,8 @@ namespace Domain.Aggregates.Identity.PatientProfile
                 Guid.NewGuid(),
                 userId,
                 dateOfBirth,
-                sex);
+                sex,
+                consent);
         }
 
         public Result AcceptConsent()

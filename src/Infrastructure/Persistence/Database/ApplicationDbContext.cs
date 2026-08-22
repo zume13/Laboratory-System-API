@@ -6,14 +6,16 @@ using Domain.Aggregates.Communications.SmsGateway;
 using Domain.Aggregates.Identity.AdministratorProfile;
 using Domain.Aggregates.Identity.ClinicalStaffProfile;
 using Domain.Aggregates.Identity.PatientProfile;
-using Domain.Aggregates.Identity.User;
+using Domain.Aggregates.Identity.UserProfile;
 using Domain.Aggregates.Laboratory.LaboratoryRequest;
 using Domain.Aggregates.Laboratory.TestCategory;
 using Domain.Aggregates.Monitoring.ActivityLog;
 using Domain.Aggregates.Monitoring.StorageStatus;
 using Domain.Aggregates.Monitoring.SystemConfig;
+using Domain.Aggregates.RefreshToken;
 using Domain.Aggregates.SlotCapacity;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Shared;
 
 namespace Infrastructure.Persistence.Database
 {
@@ -50,6 +52,8 @@ namespace Infrastructure.Persistence.Database
         public DbSet<Appointment> Appointments => Set<Appointment>();
         // AppointmentReminder intentionally has no DbSet — only reachable via Appointment.Reminders.
 
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
@@ -58,7 +62,10 @@ namespace Infrastructure.Persistence.Database
 
         // IUnitOfWork — DbContext.SaveChangesAsync returns Task<int>; the interface
         // only cares that the transaction committed, so this adapts the signature.
-        Task IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
-            => base.SaveChangesAsync(cancellationToken);
+
+        Task<Result> IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }   
 }

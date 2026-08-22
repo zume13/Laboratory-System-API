@@ -1,4 +1,4 @@
-﻿using Domain.Aggregates.Identity.User.Enums;
+﻿using Domain.Aggregates.Identity.UserProfile.Enums;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
 
