@@ -45,7 +45,6 @@ namespace Infrastructure.Services
             Name lastName,
             Email email,
             PhoneNumber phoneNumber,
-            Sex sex,
             string password,
             UserRole role,
             CancellationToken cancellationToken = default)
@@ -61,8 +60,6 @@ namespace Infrastructure.Services
 
             if(newUser.IsFailure)
                 return newUser.Error;
-
-            await _userRepository.AddAsync(newUser.value);
 
             return ResultT<User>.Success(newUser.value);
         }

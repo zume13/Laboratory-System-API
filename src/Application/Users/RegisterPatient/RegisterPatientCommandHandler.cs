@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Base;
+﻿using Application.Abstractions.Auth;
+using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.Identity.PatientProfile;
 using Domain.Aggregates.Identity.UserProfile;
@@ -14,39 +15,33 @@ namespace Application.Users.RegisterPatient
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPasswordHasher<User> _hasher;
+        private readonly IAuthService _authService;
         private readonly IPatientProfileRepository _patientProfileRepository;
 
-        public RegisterPatientCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher<User> hasher, IPatientProfileRepository patientProfileRepository)
+        public RegisterPatientCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IAuthService service, IPatientProfileRepository patientProfileRepository)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
-            _hasher = hasher;
+            _authService = service;
             _patientProfileRepository = patientProfileRepository;
         }
 
         public async Task<Result> Handle(RegisterPatientCommand request, CancellationToken cancellationToken)
         {
-            var emailExists = await _userRepository.ExistsByEmailAsync(request.email, cancellationToken);
-            
-            if (emailExists)
-                return RegisterPatientErrors.UserWithEmailAlreadyExists;
+            var newUser = await _authService.LocalRegisterAsync(
+                 Name.Create(request.firstName).value,
+                 Name.Create(request.lastName).value,
+                 Email.Create(request.email).value,
+                 PhoneNumber.Create(request.phoneNumber).value,
+                 request.password,
+                 UserRole.ClinicalStaff);
 
-            var user = User.Create(
-                Name.Create(request.firstName).value,
-                Name.Create(request.lastName).value,
-                Email.Create(request.email).value,
-                PhoneNumber.Create(request.phoneNumber).value,
-                _hasher.HashPassword(null!, request.password),
-                UserRole.Patient
-            );
+            if (newUser.IsFailure)
+                return newUser.Error;
 
-            if (user.IsFailure)
-                return user.Error;
+            var patienProfile = PatientProfile.Create(newUser.value.Id, request.DateOfBirth, request.sex, request.consent);
 
-            var patienProfile = PatientProfile.Create(user.value.Id, request.DateOfBirth, request.sex, request.consent);
-
-            await _userRepository.AddAsync(user.value, cancellationToken);
+            await _userRepository.AddAsync(newUser.value, cancellationToken);
             await _patientProfileRepository.AddAsync(patienProfile.value, cancellationToken);   
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);

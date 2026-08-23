@@ -1,6 +1,5 @@
 ﻿using Application.Dto;
 using Domain.Aggregates.Identity.UserProfile.Enums;
-using Domain.Aggregates.Identity.PatientProfile.Enums;
 using Domain.ValueObjects;
 using SharedKernel.Shared;
 using Domain.Aggregates.Identity.UserProfile;
@@ -16,7 +15,6 @@ namespace Application.Abstractions.Auth
             Name lastName,
             Email email,
             PhoneNumber phoneNumber,
-            Sex sex,
             string password, 
             UserRole role,
             CancellationToken cancellationToken = default);
