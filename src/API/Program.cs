@@ -1,10 +1,13 @@
 using Infrastructure;
 using Application;
+using Laboratory_Management_API.Extensions;
+using Laboratory_Management_API;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddPresentation();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -15,7 +18,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.AddSwaggerWithUI();
 }
 
 app.UseHttpsRedirection();

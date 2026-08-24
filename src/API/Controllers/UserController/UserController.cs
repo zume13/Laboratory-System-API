@@ -17,6 +17,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             _mediator = mediator;
         }
 
+       
         [HttpPost("auth/register-employee")]
         public async Task<IActionResult> RegisterEmployee(RegisterEmployeeDto registerDto)
         {
