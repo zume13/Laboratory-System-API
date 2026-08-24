@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.Identity.UserProfile;
+using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +23,14 @@ namespace Infrastructure.Persistence.EntityConfiguration
                 e.Property(p => p.value).HasColumnName("Email").IsRequired().HasMaxLength(150);
                 e.HasIndex(p => p.value).IsUnique();
             });
+
+            builder.Property(x => x.PhoneNumber)
+                .HasConversion(
+                    phoneNumber => phoneNumber.value,
+                    value => PhoneNumber.Create(value).value)
+                .HasColumnName("PhoneNumber")
+                .IsRequired()
+                .HasMaxLength(15);
 
             builder.Property(x => x.HashedPassword).IsRequired();
             builder.Property(x => x.Role).IsRequired().HasConversion<int>();

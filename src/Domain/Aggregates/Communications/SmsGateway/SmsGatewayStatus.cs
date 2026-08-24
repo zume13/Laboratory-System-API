@@ -5,6 +5,7 @@ namespace Domain.Aggregates.Communications.SmsGateway
 {
     public class SmsGatewayStatus : AggregateRoot
     {
+        private SmsGatewayStatus() { }
         private SmsGatewayStatus(
             Guid id,
             string status,

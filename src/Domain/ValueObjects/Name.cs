@@ -1,9 +1,10 @@
-﻿using SharedKernel.Shared;
+﻿using LeaveManagement.SharedKernel.Primitives;
+using SharedKernel.Shared;
 
 namespace Domain.ValueObjects
 {
 
-    public sealed record Name
+    public sealed class Name : ValueObject
     {
         public string value { get; }
 
@@ -18,6 +19,11 @@ namespace Domain.ValueObjects
                 return GeneralErrors.General.Invalid(nameof(value));
 
             return new Name(value.Trim());
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            yield return value;
         }
     }
 }

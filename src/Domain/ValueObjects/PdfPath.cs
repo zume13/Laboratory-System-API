@@ -1,8 +1,9 @@
-﻿using SharedKernel.Shared;
+﻿using LeaveManagement.SharedKernel.Primitives;
+using SharedKernel.Shared;
 
 namespace Domain.ValueObjects
 {
-    public sealed record PdfPath
+    public sealed class PdfPath : ValueObject
     {
         public string value { get; }
 
@@ -17,6 +18,11 @@ namespace Domain.ValueObjects
                 return GeneralErrors.General.Invalid(nameof(value));
 
             return new PdfPath(value.Trim());
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            yield return value;
         }
     }
 }

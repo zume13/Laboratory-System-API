@@ -1,8 +1,9 @@
-﻿using SharedKernel.Shared;
+﻿using LeaveManagement.SharedKernel.Primitives;
+using SharedKernel.Shared;
 
 namespace Domain.ValueObjects
 {
-    public sealed record PhoneNumber
+    public sealed class PhoneNumber : ValueObject
     {
         public string value { get; }
 
@@ -18,6 +19,11 @@ namespace Domain.ValueObjects
                 return GeneralErrors.General.Invalid(nameof(value));
 
             return new PhoneNumber(digitsOnly);
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            yield return value;
         }
     }
 }

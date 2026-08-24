@@ -6,6 +6,9 @@ namespace Domain.Aggregates.AppointmentSlot
 {
     public class AppointmentSlot : AggregateRoot
     {
+        private AppointmentSlot()
+        {
+        }
         private AppointmentSlot(
             Guid id,
             DateTime date,

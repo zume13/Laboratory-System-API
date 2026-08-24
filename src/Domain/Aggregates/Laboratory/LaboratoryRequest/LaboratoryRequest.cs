@@ -8,6 +8,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
     {
         private readonly List<LaboratoryResult> _results = new();
 
+        private LaboratoryRequest() { }
         private LaboratoryRequest(
             Guid id,
             Guid? patientId,

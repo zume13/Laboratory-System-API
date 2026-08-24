@@ -6,6 +6,7 @@ namespace Domain.Aggregates.Monitoring.ActivityLog
 {
     public class ActivityLog : AggregateRoot
     {
+        private ActivityLog() { }
         private ActivityLog(
             Guid id,
             Guid? userId,

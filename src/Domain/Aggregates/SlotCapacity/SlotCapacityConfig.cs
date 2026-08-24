@@ -5,6 +5,7 @@ namespace Domain.Aggregates.SlotCapacity
 {
     public class SlotCapacityConfig : AggregateRoot
     {
+        private SlotCapacityConfig() { }
         private SlotCapacityConfig(
             Guid id,
             Guid testCategoryId,

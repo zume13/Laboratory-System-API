@@ -9,6 +9,7 @@ namespace Domain.Aggregates.Appointment
     {
         private readonly List<AppointmentReminder> _reminders = new();
 
+        private Appointment() { }
         private Appointment(
             Guid id,
             Guid patientId,

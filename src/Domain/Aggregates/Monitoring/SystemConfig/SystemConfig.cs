@@ -5,6 +5,7 @@ namespace Domain.Aggregates.Monitoring.SystemConfig
 {
     public class SystemConfig : AggregateRoot
     {
+        private SystemConfig() { }
         private SystemConfig(
             Guid id,
             string key,

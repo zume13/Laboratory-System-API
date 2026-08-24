@@ -19,7 +19,7 @@ using SharedKernel.Shared;
 
 namespace Infrastructure.Persistence.Database
 {
-    public class ApplicationDbContext : DbContext, IUnitOfWork
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -56,16 +56,9 @@ namespace Infrastructure.Persistence.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
-        // IUnitOfWork — DbContext.SaveChangesAsync returns Task<int>; the interface
-        // only cares that the transaction committed, so this adapts the signature.
-
-        Task<Result> IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }   
 }

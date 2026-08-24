@@ -1,8 +1,9 @@
-﻿using SharedKernel.Shared;
+﻿using LeaveManagement.SharedKernel.Primitives;
+using SharedKernel.Shared;
 
 namespace Domain.ValueObjects
 {
-    public sealed record Money
+    public sealed class Money : ValueObject
     {
         public decimal value { get; }
 
@@ -14,6 +15,11 @@ namespace Domain.ValueObjects
                 return GeneralErrors.General.Invalid(nameof(value));
 
             return new Money(value);
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            yield return value;
         }
     }
 

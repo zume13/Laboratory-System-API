@@ -6,6 +6,7 @@ namespace Domain.Aggregates.Communications.Notification
 {
     public class Notification : AggregateRoot
     {
+        private Notification() { }
         private Notification(
             Guid id,
             Guid patientId,

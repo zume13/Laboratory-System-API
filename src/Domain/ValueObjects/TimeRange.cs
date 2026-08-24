@@ -1,8 +1,9 @@
-﻿using SharedKernel.Shared;
+﻿using LeaveManagement.SharedKernel.Primitives;
+using SharedKernel.Shared;
 
 namespace Domain.ValueObjects
 {
-    public sealed record TimeRange
+    public sealed class TimeRange : ValueObject
     {
         public TimeSpan Start { get; }
 
@@ -20,6 +21,11 @@ namespace Domain.ValueObjects
                 return GeneralErrors.General.Invalid(nameof(end));
 
             return new TimeRange(start, end);
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            throw new NotImplementedException();
         }
     }
 }

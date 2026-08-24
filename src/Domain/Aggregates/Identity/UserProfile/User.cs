@@ -7,6 +7,7 @@ namespace Domain.Aggregates.Identity.UserProfile
 {
     public class User : AggregateRoot
     {
+        private User() { }
         private User(
             Guid id,
             Name firstName,

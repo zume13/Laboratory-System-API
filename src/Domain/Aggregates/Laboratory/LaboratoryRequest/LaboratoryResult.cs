@@ -6,6 +6,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
 {
     public class LaboratoryResult : Entity
     {
+        private LaboratoryResult() { }
         private LaboratoryResult(
             Guid id,
             Guid laboratoryRequestId,

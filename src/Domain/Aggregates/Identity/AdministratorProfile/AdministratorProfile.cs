@@ -5,6 +5,7 @@ namespace Domain.Aggregates.Identity.AdministratorProfile
 {
     public class AdministratorProfile : AggregateRoot
     {
+        private AdministratorProfile() { }
         private AdministratorProfile(
             Guid id,
             Guid userId,

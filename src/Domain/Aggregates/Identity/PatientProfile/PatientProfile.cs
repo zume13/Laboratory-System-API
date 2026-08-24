@@ -6,6 +6,7 @@ namespace Domain.Aggregates.Identity.PatientProfile
 {
     public class PatientProfile : AggregateRoot
     {
+        private PatientProfile() { }
         private PatientProfile(
             Guid id,
             Guid userId,

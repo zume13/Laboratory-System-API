@@ -6,6 +6,7 @@ namespace Domain.Aggregates.Monitoring.StorageStatus
 {
     public class StorageStatus : AggregateRoot
     {
+        private StorageStatus() { }
         private StorageStatus(
             Guid id,
             string storageType,

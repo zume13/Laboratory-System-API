@@ -5,6 +5,7 @@ namespace Domain.Aggregates.RefreshToken
 {
     public class RefreshToken : AggregateRoot
     {
+        private RefreshToken() { }
         private RefreshToken(string tokenHash, Guid userId, DateTime expiresAt) : base(Guid.NewGuid())
         {
             TokenHash = tokenHash;

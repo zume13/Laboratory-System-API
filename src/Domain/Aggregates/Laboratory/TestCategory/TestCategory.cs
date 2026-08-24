@@ -1,11 +1,13 @@
 ﻿using Domain.ValueObjects;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
+using System.Runtime.CompilerServices;
 
 namespace Domain.Aggregates.Laboratory.TestCategory
 {
     public class TestCategory : AggregateRoot
     {
+        private TestCategory() { }
         private TestCategory(
             Guid id,
             Name name,
