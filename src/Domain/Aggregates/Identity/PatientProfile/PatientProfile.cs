@@ -10,7 +10,7 @@ namespace Domain.Aggregates.Identity.PatientProfile
         private PatientProfile(
             Guid id,
             Guid userId,
-            DateTime dateOfBirth,
+            DateOnly dateOfBirth,
             Sex sex,
             bool consent)
             : base(id)
@@ -23,7 +23,7 @@ namespace Domain.Aggregates.Identity.PatientProfile
 
         public Guid UserId { get; private set; }
 
-        public DateTime DateOfBirth { get; private set; }
+        public DateOnly DateOfBirth { get; private set; }
 
         public Sex Sex { get; private set; }
 
@@ -33,12 +33,15 @@ namespace Domain.Aggregates.Identity.PatientProfile
 
         public static ResultT<PatientProfile> Create(
             Guid userId,
-            DateTime dateOfBirth,
+            DateOnly dateOfBirth,
             Sex sex,
             bool consent)
         {
             if (userId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(userId));
+
+            if (dateOfBirth > DateOnly.FromDateTime(DateTime.UtcNow))
+                return PatientProfileErrors.DateOfBirthInvalid;
 
             return new PatientProfile(
                 Guid.NewGuid(),

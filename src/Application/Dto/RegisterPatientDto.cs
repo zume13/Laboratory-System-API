@@ -7,7 +7,7 @@ namespace Application.Dto
         string lastName,
         string email,
         string phoneNumber,
-        DateTime dateOfBirth,
+        DateOnly dateOfBirth,
         Sex sex,
         string password,
         bool consent);

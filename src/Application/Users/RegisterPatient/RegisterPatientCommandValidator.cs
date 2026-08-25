@@ -11,7 +11,7 @@ namespace Application.Users.RegisterPatient
             RuleFor(x => x.email).NotEmpty().EmailAddress().WithMessage("A valid email address is required.");
             RuleFor(x => x.phoneNumber).NotEmpty().WithMessage("Phone number is required.");
             RuleFor(x => x.password).NotEmpty().MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
-            RuleFor(x => x.DateOfBirth).NotEmpty().LessThan(DateTime.Now).WithMessage("Date of birth must be in the past.");
+            RuleFor(x => x.DateOfBirth).NotEmpty().LessThan(DateOnly.FromDateTime(DateTime.UtcNow)).WithMessage("Date should be in the past");
         }
     }
 }

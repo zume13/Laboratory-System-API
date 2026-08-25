@@ -17,7 +17,6 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-//migrate db
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

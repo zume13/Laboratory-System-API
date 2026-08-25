@@ -8,7 +8,7 @@ namespace Application.Users.RegisterPatient
             string lastName,
             string email,
             string phoneNumber,
-            DateTime DateOfBirth,
+            DateOnly DateOfBirth,
             Sex sex,
             string password,
             bool consent) : IRequest<Result>;
