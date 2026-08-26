@@ -3,6 +3,7 @@ using Application.Users.LogIn;
 using Application.Users.RegisterEmployee;
 using Application.Users.RegisterPatient;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Laboratory_Management_API.Controllers.UserController
@@ -17,7 +18,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             _mediator = mediator;
         }
 
-       
+        [AllowAnonymous]
         [HttpPost("auth/register-employee")]
         public async Task<IActionResult> RegisterEmployee(RegisterEmployeeDto registerDto)
         {
@@ -37,6 +38,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("auth/register-patient")]
         public async Task<IActionResult> RegisterPatient(RegisterPatientDto registerDto)
         {
@@ -58,6 +60,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("auth/login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
