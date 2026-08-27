@@ -62,8 +62,8 @@ namespace Laboratory_Management_API
 
             services.AddRateLimiter(opt =>
                 {
-                    opt.GlobalLimiter();
-                    opt.AddPolicy()
+                    //opt.GlobalLimiter();
+                   //opt.AddPolicy();
                 }
             );
 

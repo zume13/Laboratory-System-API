@@ -1,4 +1,5 @@
 using Infrastructure;
+using Laboratory_Management_API.Middleware;
 using Infrastructure.Persistence.Database;
 using Application;
 using Laboratory_Management_API.Extensions;
@@ -14,6 +15,8 @@ builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -24,6 +27,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.AddSwaggerWithUI();

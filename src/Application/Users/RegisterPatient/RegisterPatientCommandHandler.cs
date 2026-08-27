@@ -28,11 +28,27 @@ namespace Application.Users.RegisterPatient
 
         public async Task<Result> Handle(RegisterPatientCommand request, CancellationToken cancellationToken)
         {
+            var firstNameResult = Name.Create(request.firstName);
+            if (firstNameResult.IsFailure)
+                return firstNameResult.Error;
+
+            var lastNameResult = Name.Create(request.lastName);
+            if (lastNameResult.IsFailure)
+                return lastNameResult.Error;
+
+            var emailResult = Email.Create(request.email);
+            if (emailResult.IsFailure)
+                return emailResult.Error;
+
+            var phoneResult = PhoneNumber.Create(request.phoneNumber);
+            if (phoneResult.IsFailure)
+                return phoneResult.Error;
+
             var newUser = await _authService.LocalRegisterAsync(
-                 Name.Create(request.firstName).value,
-                 Name.Create(request.lastName).value,
-                 Email.Create(request.email).value,
-                 PhoneNumber.Create(request.phoneNumber).value,
+                 firstNameResult.value,
+                 lastNameResult.value,
+                 emailResult.value,
+                 phoneResult.value,
                  request.password,
                  UserRole.ClinicalStaff);
 
@@ -41,8 +57,11 @@ namespace Application.Users.RegisterPatient
 
             var patienProfile = PatientProfile.Create(newUser.value.Id, request.DateOfBirth, request.sex, request.consent);
 
+            if (patienProfile.IsFailure)
+                return patienProfile.Error;
+
             await _userRepository.AddAsync(newUser.value, cancellationToken);
-            await _patientProfileRepository.AddAsync(patienProfile.value, cancellationToken);   
+            await _patientProfileRepository.AddAsync(patienProfile.value, cancellationToken);
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
