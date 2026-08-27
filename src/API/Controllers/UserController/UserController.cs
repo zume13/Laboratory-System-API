@@ -71,7 +71,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             if(result.IsFailure)
                 return BadRequest(result.Error);
 
-            return Ok();
+            return Ok(result.value);
         }
     }
 }
