@@ -1,5 +1,8 @@
 ﻿using Application.Dto;
 using Application.TestCategories.CreateTestCategory;
+using Application.TestCategories.UpdateTestCategoryPrice;
+using Application.TestCategories.DeactivateTestCategory;
+using Application.TestCategories.ReactivateTestCategory;
 using Application.Users.LogIn;
 using Application.Users.RegisterEmployee;
 using Application.Users.RegisterPatient;
@@ -27,6 +30,45 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
             var result = await _mediator.Send(command);
             if (result.IsFailure)
                 return BadRequest(result.Error);
+            return Ok();
+        }
+
+        [HttpPatch("{id}/updateprice")]
+        public async Task<IActionResult> UpdatePrice(Guid id, UpdateTestCategoryPriceDto dto)
+        {
+            var command = new UpdateTestCategoryPriceCommand(id, dto.price);
+
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/deactivate")]
+        public async Task<IActionResult> Deactivate(Guid id)
+        {
+            var command = new DeactivateTestCategoryCommand(id);
+
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/reactivate")]
+        public async Task<IActionResult> Reactivate(Guid id)
+        {
+            var command = new ReactivateTestCategoryCommand(id);
+
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
             return Ok();
         }
     }
