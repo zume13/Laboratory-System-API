@@ -24,12 +24,28 @@ namespace Application.Users.RegisterEmployee
         }
         public async Task<Result> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
         {
+            var firstNameResult = Name.Create(request.firstName);
+            if (firstNameResult.IsFailure)
+                return firstNameResult.Error;
+
+            var lastNameResult = Name.Create(request.lastName);
+            if (lastNameResult.IsFailure)
+                return lastNameResult.Error;
+
+            var emailResult = Email.Create(request.email);
+            if (emailResult.IsFailure)
+                return emailResult.Error;
+
+            var phoneResult = PhoneNumber.Create(request.phoneNumber);
+            if (phoneResult.IsFailure)
+                return phoneResult.Error;
+
             var newUser = await _authService.LocalRegisterAsync(
-                Name.Create(request.firstName).value, 
-                Name.Create(request.lastName).value, 
-                Email.Create(request.email).value, 
-                PhoneNumber.Create(request.phoneNumber).value, 
-                request.password, 
+                firstNameResult.value,
+                lastNameResult.value,
+                emailResult.value,
+                phoneResult.value,
+                request.password,
                 UserRole.ClinicalStaff);
 
             if (newUser.IsFailure)
@@ -37,7 +53,7 @@ namespace Application.Users.RegisterEmployee
 
             var profile = ClinicalStaffProfile.Create(newUser.value.Id, request.staffRole);
 
-            if(profile.IsFailure)
+            if (profile.IsFailure)
                 return profile.Error;
 
             await _clinicalProfileRepository.AddAsync(profile.value, cancellationToken);
@@ -45,7 +61,7 @@ namespace Application.Users.RegisterEmployee
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            if(saveResult.IsFailure)
+            if (saveResult.IsFailure)
                 return saveResult.Error;
 
             return Result.Success();
