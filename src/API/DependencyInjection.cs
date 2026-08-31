@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using System.Threading.RateLimiting;
 
 namespace Laboratory_Management_API
 {
@@ -62,7 +63,7 @@ namespace Laboratory_Management_API
 
             services.AddRateLimiter(opt =>
                 {
-                    opt.GlobalLimiter();
+                    opt.GlobalLimiter = PartitionedRateLimiter.Create(
                     opt.AddPolicy()
                 }
             );
