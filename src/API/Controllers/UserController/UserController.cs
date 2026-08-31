@@ -5,6 +5,8 @@ using Application.Users.RegisterPatient;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using SharedKernel.Constants;
 
 namespace Laboratory_Management_API.Controllers.UserController
 {
@@ -19,6 +21,7 @@ namespace Laboratory_Management_API.Controllers.UserController
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
         [HttpPost("auth/register-employee")]
         public async Task<IActionResult> RegisterEmployee(RegisterEmployeeDto registerDto)
         {
@@ -39,6 +42,7 @@ namespace Laboratory_Management_API.Controllers.UserController
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
         [HttpPost("auth/register-patient")]
         public async Task<IActionResult> RegisterPatient(RegisterPatientDto registerDto)
         {
@@ -61,6 +65,7 @@ namespace Laboratory_Management_API.Controllers.UserController
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
         [HttpPost("auth/login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -71,7 +76,7 @@ namespace Laboratory_Management_API.Controllers.UserController
             if(result.IsFailure)
                 return BadRequest(result.Error);
 
-            return Ok();
+            return Ok(result.value);
         }
     }
 }

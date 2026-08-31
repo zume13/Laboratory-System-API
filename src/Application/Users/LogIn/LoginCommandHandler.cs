@@ -15,7 +15,11 @@ namespace Application.Users.LogIn
         }
         public async Task<ResultT<TokenDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var result = await _authService.LocalLogInAsync(Email.Create(request.email).value, request.password);
+            var emailResult = Email.Create(request.email);
+            if (emailResult.IsFailure)
+                return emailResult.Error;
+
+            var result = await _authService.LocalLogInAsync(emailResult.value, request.password);
 
             if (result.IsFailure)
                 return result.Error;

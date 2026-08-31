@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using SharedKernel.Constants;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.RateLimiting;
 
@@ -55,18 +56,62 @@ namespace Laboratory_Management_API
                         ValidIssuer = configuration["Jwt:Issuer"],
                         ValidAudience = configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
+
+                        RoleClaimType = ClaimTypes.Role,
+                        NameClaimType = ClaimTypes.NameIdentifier,
+
                         ClockSkew = TimeSpan.Zero
                     };
                 });
 
-            services.AddAuthorization();
-
             services.AddRateLimiter(opt =>
+            {
+                opt.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                opt.AddPolicy(SystemConstants.RateLimits.perUser, contex =>
                 {
-                    opt.GlobalLimiter = PartitionedRateLimiter.Create(
-                    opt.AddPolicy()
-                }
+                    var userId = contex.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? SystemConstants.RateLimits.unknown;
+
+                    return RateLimitPartition.GetSlidingWindowLimiter(partitionKey: userId,
+                        factory: _ => new SlidingWindowRateLimiterOptions
+                        {
+                            PermitLimit = 100,
+                            Window = TimeSpan.FromMinutes(1),
+                            SegmentsPerWindow = 6,
+                            QueueLimit = 0
+                        });
+
+                });
+
+                opt.AddPolicy(SystemConstants.RateLimits.anonymous, context =>
+                {
+                    var ip = context.Connection.RemoteIpAddress?.ToString() ?? SystemConstants.RateLimits.unknown;
+
+                    return RateLimitPartition.GetSlidingWindowLimiter(
+                        partitionKey: ip,
+                        factory: _ => new SlidingWindowRateLimiterOptions
+                        {
+                            PermitLimit = 100,
+                            Window = TimeSpan.FromMinutes(1),
+                            SegmentsPerWindow = 6,
+                            QueueLimit = 0
+                        });
+                });
+            }
             );
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy(SystemConstants.AuthPolicies.adminOnly, policy =>
+                {
+                    policy.RequireRole(SystemConstants.Roles.Admin);
+                });
+
+                opt.AddPolicy(SystemConstants.AuthPolicies.companyPersonnel, policy =>
+                {
+                    policy.RequireRole(SystemConstants.Roles.Admin, SystemConstants.Roles.ClinicalStaff);
+                });
+            });
 
             return services;
         }
