@@ -1,4 +1,4 @@
-﻿using Application.Validations;
+﻿using Application.Behaviours.Validations;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
