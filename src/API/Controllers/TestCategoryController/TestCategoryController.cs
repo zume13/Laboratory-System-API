@@ -25,7 +25,7 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
 
         [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
         [Authorize(Policy = SystemConstants.AuthPolicies.adminOnly)]
-        [HttpPost]
+        [HttpPost("create-category")]
         public async Task<IActionResult> Create(CreateTestCategoryDto crtDto)
         {
             var command = new CreateTestCategoryCommand(crtDto.name, crtDto.price);
@@ -37,7 +37,7 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
 
         [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
         [Authorize(Policy = SystemConstants.AuthPolicies.adminOnly)]
-        [HttpPatch("{id}/updateprice")]
+        [HttpPatch("{id}/update-price")]
         public async Task<IActionResult> UpdatePrice(Guid id, UpdateTestCategoryPriceDto dto)
         {
             var command = new UpdateTestCategoryPriceCommand(id, dto.price);
@@ -82,7 +82,7 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
 
         [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
         [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpGet]
+        [HttpGet("get-all-categories")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _mediator.Send(new GetAllTestCategoriesQuery());
@@ -95,7 +95,7 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
 
         [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
         [AllowAnonymous]
-        [HttpGet("active")]
+        [HttpGet("get-active-categories")]
         public async Task<IActionResult> GetActive()
         {
             var result = await _mediator.Send(new GetActiveTestCategoriesQuery());
