@@ -1,6 +1,13 @@
-﻿namespace Application.Features.AppointmentSlots.Delete
+﻿using FluentValidation;
+
+namespace Application.Features.AppointmentSlots.Delete
 {
-    internal class DeleteAppointmentSlotCommandValidator
+    public class DeleteAppointmentSlotCommandValidator : AbstractValidator<DeleteAppointmentSlotCommand>
     {
+        public DeleteAppointmentSlotCommandValidator()
+        {
+            RuleFor(x => x.appointmentSlotId)
+                .NotEmpty().WithMessage("Appointment slot id is required.");
+        }
     }
 }

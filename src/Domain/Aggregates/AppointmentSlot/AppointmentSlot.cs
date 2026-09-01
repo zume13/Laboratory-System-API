@@ -62,6 +62,29 @@ namespace Domain.Aggregates.AppointmentSlot
                 configuredByStaffId);
         }
 
+        public Result UpdateDetails(
+            DateTime date,
+            TimeRange timeRange,
+            Guid? testCategoryId,
+            int capacity)
+        {
+            if (capacity <= 0)
+                return GeneralErrors.General.Invalid(nameof(capacity));
+
+            if (capacity < BookedCount)
+                return AppointmentSlotErrors.CapacityBelowBookedCount;
+
+            if (date.Date < DateTime.UtcNow.Date)
+                return GeneralErrors.General.Invalid(nameof(date));
+
+            Date = date;
+            TimeRange = timeRange;
+            TestCategoryId = testCategoryId;
+            Capacity = capacity;
+
+            return Result.Success();
+        }
+
         // Internal — a slot's own booked count can only change through Reserve/Release
         // so the capacity invariant can never be bypassed by another aggregate.
         internal Result Reserve()
