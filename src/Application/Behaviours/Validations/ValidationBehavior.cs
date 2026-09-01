@@ -1,4 +1,4 @@
-﻿using Application.Validations;
+﻿using Application.Behaviours.Validations;
 using FluentValidation;
 using MediatR;
 

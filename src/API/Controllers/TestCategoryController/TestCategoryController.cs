@@ -1,8 +1,10 @@
 ﻿using Application.Dto;
-using Application.TestCategories.CreateTestCategory;
-using Application.TestCategories.UpdateTestCategoryPrice;
-using Application.TestCategories.DeactivateTestCategory;
-using Application.TestCategories.ReactivateTestCategory;
+using Application.Features.TestCategories.CreateTestCategory;
+using Application.Features.TestCategories.UpdateTestCategoryPrice;
+using Application.Features.TestCategories.DeactivateTestCategory;
+using Application.Features.TestCategories.ReactivateTestCategory;
+using Application.Features.Users.CommandQueries.GetActiveTestCategories;
+using Application.Features.Users.CommandQueries.GetAllTestCategories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +78,32 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
                 return BadRequest(result.Error);
 
             return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetAllTestCategoriesQuery());
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
+        [AllowAnonymous]
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActive()
+        {
+            var result = await _mediator.Send(new GetActiveTestCategoriesQuery());
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
         }
     }
 }
