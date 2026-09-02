@@ -14,6 +14,8 @@ namespace SharedKernel.Constants
         {
             public const string adminOnly = "admin-only";
             public const string companyPersonnel = "company-personnel";
+
+            public const string patients = "patients";
         }
 
 
