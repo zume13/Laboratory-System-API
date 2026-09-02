@@ -120,6 +120,26 @@ namespace Domain.Aggregates.Appointment
             return Result.Success();
         }
 
+        public Result RescheduleAppointment(Guid appointmentSlotId)
+        {
+            if (appointmentSlotId == Guid.Empty)
+                return GeneralErrors.General.Empty(nameof(appointmentSlotId));
+
+            AppointmentSlotId = appointmentSlotId;
+
+            return Result.Success();
+        }
+
+        public Result ChangeTestCategory(Guid testCategoryId)
+        {
+            if (testCategoryId == Guid.Empty)
+                return GeneralErrors.General.Empty(nameof(testCategoryId));
+
+            TestCategoryId = testCategoryId;
+
+            return Result.Success();
+        }
+
         public ResultT<AppointmentReminder> ScheduleReminder(
             NotificationChannel channel,
             DateTime scheduledSendTime)

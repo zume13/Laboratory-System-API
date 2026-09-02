@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.Appointments.RescheduleAppointment
 {
-    internal class RescheduleAppointmentCommand
-    {
-    }
+    public record RescheduleAppointmentCommand(
+        Guid AppointmentId,
+        Guid CurrentAppointmentSlotId,
+        Guid NewAppointmentSlotId
+        ) : IRequest<Result>; 
+
 }

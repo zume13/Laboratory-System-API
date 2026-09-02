@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation;
 
 namespace Application.Features.Appointments.CancelAppointment
 {
-    internal class CancelAppointCommandValidator
+    public class CancelAppointCommandValidator : AbstractValidator<CancelAppointmentCommand>    
     {
+        public CancelAppointCommandValidator() 
+        {
+            RuleFor(x => x.AppointmentId).NotEmpty().WithMessage("Appointment Id is required.");
+        }
     }
 }

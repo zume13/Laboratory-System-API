@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.Appointments.CancelAppointment
 {
-    internal class CancelAppointmentCommand
-    {
-    }
+    public record CancelAppointmentCommand(Guid AppointmentId) : IRequest<Result>;
 }

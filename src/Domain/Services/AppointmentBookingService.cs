@@ -34,6 +34,7 @@ namespace Domain.Services
         public static Result Cancel(Appointment appointment, AppointmentSlot slot)
         {
             var cancelResult = appointment.Cancel();
+
             if (cancelResult.IsFailure)
                 return cancelResult.Error;
 
@@ -48,5 +49,33 @@ namespace Domain.Services
 
             return slot.Release();
         }
+
+        public static Result UpdateSlot(
+        Appointment appointment,
+        AppointmentSlot currentSlot,
+        AppointmentSlot newSlot
+            )
+        {
+            if (currentSlot.Id == newSlot.Id)
+                return AppointmentSlotErrors.InvalidSelectedSlot;
+
+            var reserveResult = newSlot.Reserve();
+
+            if (reserveResult.IsFailure)
+                return reserveResult.Error;
+
+            var updateResult = appointment.RescheduleAppointment(newSlot.Id);
+
+            if (updateResult.IsFailure)
+                return updateResult.Error;
+
+            var releaseResult = currentSlot.Release();
+
+            if (releaseResult.IsFailure)
+                return releaseResult.Error;
+
+            return Result.Success();
+        }
+        
     }
 }

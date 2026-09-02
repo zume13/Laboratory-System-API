@@ -11,5 +11,6 @@ namespace Domain.Aggregates.AppointmentSlot
 
         public static Error HasActiveBookings(Guid id) => Error.Conflict("AppointmentSlot.HasActiveBookings", $"Appointment slot '{id}' has active bookings and cannot be deleted.");
         public static Error CapacityBelowBookedCount => Error.Conflict("AppointmentSlot.CapacityBelowBookedCount", "Capacity cannot be reduced below the current number of bookings.");
+        public static Error InvalidSelectedSlot => Error.Conflict("AppointmentSlot.InvalidSelectedSlot", "The selected appointment slot is invalid or unavailable.");
     }
 }
