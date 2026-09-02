@@ -1,10 +1,10 @@
 ﻿using Application.Dto;
-using Application.Features.TestCategories.CreateTestCategory;
-using Application.Features.TestCategories.UpdateTestCategoryPrice;
-using Application.Features.TestCategories.DeactivateTestCategory;
-using Application.Features.TestCategories.ReactivateTestCategory;
-using Application.Features.Users.CommandQueries.GetActiveTestCategories;
-using Application.Features.Users.CommandQueries.GetAllTestCategories;
+using Application.Features.TestCategories.Commands.CreateTestCategory;
+using Application.Features.TestCategories.Commands.UpdateTestCategoryPrice;
+using Application.Features.TestCategories.Commands.DeactivateTestCategory;
+using Application.Features.TestCategories.Commands.ReactivateTestCategory;
+using Application.Features.TestCategories.Queries.GetActiveTestCategories;
+using Application.Features.TestCategories.Queries.GetAllTestCategories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

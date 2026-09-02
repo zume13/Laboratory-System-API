@@ -12,6 +12,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
             public static Error RequestResultAlreadyReleased => Error.Conflict("Result.Released", "The result has already been released for this request");
             public static Error ExistingPatientId => Error.Conflict("Request.ExistingPatientId", "The patient already has a laboratory request with the same patient ID.");
             public static Error ResultAlreadyAttached => Error.Conflict("Result.AlreadyAttached", "A result is already attached to this laboratory request.");
+            public static Error NotFound(Guid id) => Error.NotFound("Request.NotFound", $"No laboratory request found with id '{id}'.");
         }
         public static class LaboratoryResult 
         { 

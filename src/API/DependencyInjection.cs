@@ -111,6 +111,11 @@ namespace Laboratory_Management_API
                 {
                     policy.RequireRole(SystemConstants.Roles.Admin, SystemConstants.Roles.ClinicalStaff);
                 });
+
+                opt.AddPolicy(SystemConstants.AuthPolicies.patients, policy =>
+                {
+                    policy.RequireRole(SystemConstants.Roles.Patient, SystemConstants.Roles.Admin, SystemConstants.Roles.ClinicalStaff);
+                });
             });
 
             return services;
