@@ -4,7 +4,7 @@ using Domain.Aggregates.Laboratory.TestCategory;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.TestCategories.UpdateTestCategoryPrice
+namespace Application.Features.TestCategories.Commands.UpdateTestCategoryPrice
 {
     public class UpdateTestCategoryPriceCommandHandler : IRequestHandler<UpdateTestCategoryPriceCommand, Result>
     {

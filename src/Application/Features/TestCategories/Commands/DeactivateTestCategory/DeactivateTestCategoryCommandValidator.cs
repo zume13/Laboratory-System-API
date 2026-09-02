@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.TestCategories.DeactivateTestCategory
+namespace Application.Features.TestCategories.Commands.DeactivateTestCategory
 {
     public class DeactivateTestCategoryCommandValidator : AbstractValidator<DeactivateTestCategoryCommand>
     {

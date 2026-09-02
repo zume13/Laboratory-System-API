@@ -5,7 +5,7 @@ using Domain.ValueObjects;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.TestCategories.CreateTestCategory
+namespace Application.Features.TestCategories.Commands.CreateTestCategory
 {
     public class CreateTestCategoryCommandHandler : IRequestHandler<CreateTestCategoryCommand, Result>
     {

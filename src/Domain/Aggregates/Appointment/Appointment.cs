@@ -71,12 +71,12 @@ namespace Domain.Aggregates.Appointment
                 bookingChannel);
         }
 
-        public Result Confirm()
+        public Result Reserve()
         {
-            if (Status != AppointmentStatus.Booked)
+            if (Status == AppointmentStatus.Booked)
                 return AppointmentErrors.InvalidStatus;
 
-            Status = AppointmentStatus.Confirmed;
+            Status = AppointmentStatus.Booked;
             ConfirmedAt = DateTime.UtcNow;
 
             return Result.Success();
@@ -96,7 +96,7 @@ namespace Domain.Aggregates.Appointment
 
         public Result MarkNoShow()
         {
-            if (Status is not (AppointmentStatus.Booked or AppointmentStatus.Confirmed))
+            if (Status is not (AppointmentStatus.Booked))
                 return AppointmentErrors.InvalidStatus;
 
             Status = AppointmentStatus.NoShow;
@@ -108,7 +108,7 @@ namespace Domain.Aggregates.Appointment
         // The LabRequest itself is created by the application layer via LabRequest.Create(...).
         public Result CompleteWithLabRequest(Guid labRequestId)
         {
-            if (Status != AppointmentStatus.Confirmed)
+            if (Status != AppointmentStatus.Booked)
                 return AppointmentErrors.InvalidStatus;
 
             if (labRequestId == Guid.Empty)

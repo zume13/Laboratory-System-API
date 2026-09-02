@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Aggregates.Appointment.Enums;
+using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.Appointments.CreateOnlineAppointment
 {
-    internal class CreateOnlineAppointmentCommand
-    {
-    }
+    public record CreateOnlineAppointmentCommand(
+            Guid patientId,
+            Guid appointmentSlotId,
+            Guid testCategoryId) : IRequest<ResultT<Guid>>;
 }

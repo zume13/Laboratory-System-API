@@ -17,10 +17,18 @@ namespace Domain.Services
             BookingChannel channel)
         {
             var reserveResult = slot.Reserve();
+
             if (reserveResult.IsFailure)
                 return reserveResult.Error;
 
-            return Appointment.Create(patientId, slot.Id, testCategoryId, channel);
+            var book = Appointment.Create(patientId, slot.Id, testCategoryId, channel);
+
+            if(book.IsFailure)
+                return book.Error;
+
+            book.value.Reserve();   
+
+            return ResultT<Appointment>.Success(book.value);
         }
 
         public static Result Cancel(Appointment appointment, AppointmentSlot slot)

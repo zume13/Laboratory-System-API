@@ -3,7 +3,7 @@ using Application.Dto;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.CommandQueries.GetAllTestCategories
+namespace Application.Features.TestCategories.Queries.GetAllTestCategories
 {
     public class GetAllTestCategoriesQueryHandler : IRequestHandler<GetAllTestCategoriesQuery, ResultT<List<TestCategoryDto>>>
     {

@@ -2,7 +2,7 @@
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.CommandQueries.GetAllTestCategories
+namespace Application.Features.TestCategories.Queries.GetAllTestCategories
 {
     public record GetAllTestCategoriesQuery() : IRequest<ResultT<List<TestCategoryDto>>>;
 }

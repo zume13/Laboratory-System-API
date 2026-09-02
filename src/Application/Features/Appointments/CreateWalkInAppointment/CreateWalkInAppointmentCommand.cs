@@ -3,5 +3,8 @@ using SharedKernel.Shared;
 
 namespace Application.Features.Appointments.CreateWalkInAppointment
 {
-    public record CreateWalkInAppointmentCommand() : IRequest<ResultT<Guid>>;
+    public record CreateWalkInAppointmentCommand(
+        Guid patientId,
+        Guid appointmentSlotId,
+        Guid testCategoryId) : IRequest<ResultT<Guid>>;
 }

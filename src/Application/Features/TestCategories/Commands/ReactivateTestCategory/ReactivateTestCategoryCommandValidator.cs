@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.TestCategories.ReactivateTestCategory
+namespace Application.Features.TestCategories.Commands.ReactivateTestCategory
 {
     public class ReactivateTestCategoryCommandValidator : AbstractValidator<ReactivateTestCategoryCommand>
     {

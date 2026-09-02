@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SharedKernel.Shared;
-namespace Application.Features.TestCategories.UpdateTestCategoryPrice
+namespace Application.Features.TestCategories.Commands.UpdateTestCategoryPrice
 {
     public record UpdateTestCategoryPriceCommand(
         Guid testCategoryId, decimal price

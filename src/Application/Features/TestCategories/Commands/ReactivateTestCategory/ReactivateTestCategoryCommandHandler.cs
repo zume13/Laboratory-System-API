@@ -1,18 +1,17 @@
 ﻿using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.Laboratory.TestCategory;
-using FluentValidation;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.TestCategories.DeactivateTestCategory
+namespace Application.Features.TestCategories.Commands.ReactivateTestCategory
 {
-    public class DeactivateTestCategoryCommandHandler : IRequestHandler<DeactivateTestCategoryCommand, Result>
+    public class ReactivateTestCategoryCommandHandler : IRequestHandler<ReactivateTestCategoryCommand, Result>
     {
         private readonly ITestCategoryRepository _testCategoryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeactivateTestCategoryCommandHandler(
+        public ReactivateTestCategoryCommandHandler(
             ITestCategoryRepository testCategoryRepository,
             IUnitOfWork unitOfWork)
         {
@@ -20,15 +19,15 @@ namespace Application.Features.TestCategories.DeactivateTestCategory
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(DeactivateTestCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(ReactivateTestCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = await _testCategoryRepository.GetByIdAsync(request.testCategoryId, cancellationToken);
             if (category is null)
                 return TestCategoryErrors.NotFound(request.testCategoryId);
 
-            var deactivateResult = category.Deactivate();
-            if (deactivateResult.IsFailure)
-                return deactivateResult.Error;
+            var reactivateResult = category.Reactivate();
+            if (reactivateResult.IsFailure)
+                return reactivateResult.Error;
 
             _testCategoryRepository.Update(category);
 

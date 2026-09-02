@@ -1,5 +1,4 @@
-﻿
-using SharedKernel.Shared;
+﻿using SharedKernel.Shared;
 
 namespace Application.Abstractions.Base
 {

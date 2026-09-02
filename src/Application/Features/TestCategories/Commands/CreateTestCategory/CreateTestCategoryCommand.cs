@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.TestCategories.CreateTestCategory
+namespace Application.Features.TestCategories.Commands.CreateTestCategory
 {
     public record CreateTestCategoryCommand(
         string name, decimal price
