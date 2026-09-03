@@ -2,11 +2,13 @@
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.AppointmentSlot;
 using Domain.Aggregates.Laboratory.TestCategory;
+using Domain.Aggregates.SlotCapacity;
+using Domain.Services;
 using Domain.ValueObjects;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.AppointmentSlots.Create
+namespace Application.Features.AppointmentSlots.Commands.Create
 {
     public class CreateAppointmentSlotCommandHandler : IRequestHandler<CreateAppointmentSlotCommand, ResultT<Guid>>
     {
@@ -14,14 +16,18 @@ namespace Application.Features.AppointmentSlots.Create
         private readonly ITestCategoryRepository _testCategoryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly ISlotCapacityRepository _slotCapacityRepository;
+
         public CreateAppointmentSlotCommandHandler(
             IAppointmentSlotRepository appointmentSlotRepository,
             ITestCategoryRepository testCategoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ISlotCapacityRepository slotCapacityRepository)
         {
             _appointmentSlotRepository = appointmentSlotRepository;
             _testCategoryRepository = testCategoryRepository;
             _unitOfWork = unitOfWork;
+            _slotCapacityRepository = slotCapacityRepository;
         }
 
         public async Task<ResultT<Guid>> Handle(CreateAppointmentSlotCommand request, CancellationToken cancellationToken)
@@ -31,6 +37,16 @@ namespace Application.Features.AppointmentSlots.Create
                 var category = await _testCategoryRepository.GetByIdAsync(request.testCategoryId.Value, cancellationToken);
                 if (category is null)
                     return TestCategoryErrors.NotFound(request.testCategoryId.Value);
+
+                var config = await _slotCapacityRepository.GetByTestCategoryIdAsync(request.testCategoryId.Value, cancellationToken);
+                if (config is null)
+                    return SlotCapacityErrors.NotFound(request.testCategoryId.Value);
+
+                var existingSlots = await _appointmentSlotRepository.GetByDateAsync(request.date, cancellationToken);
+
+                var capacityCheck = SlotCapacityValidationService.ValidateNewSlotCapacity(config, existingSlots, request.capacity);
+                if (capacityCheck.IsFailure)
+                    return capacityCheck.Error;
             }
 
             var timeRangeResult = TimeRange.Create(request.startTime, request.endTime);

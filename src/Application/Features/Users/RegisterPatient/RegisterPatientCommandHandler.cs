@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Auth;
 using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
-using Domain.Aggregates.Identity.PatientProfile;
+using PatientProfileEntity = Domain.Aggregates.Identity.PatientProfile.PatientProfile;
 using Domain.Aggregates.Identity.UserProfile;
 using Domain.Aggregates.Identity.UserProfile.Enums;
 using Domain.ValueObjects;
@@ -55,7 +55,7 @@ namespace Application.Features.Users.RegisterPatient
             if (newUser.IsFailure)
                 return newUser.Error;
 
-            var patienProfile = PatientProfile.Create(newUser.value.Id, request.DateOfBirth, request.sex, request.consent);
+            var patienProfile = PatientProfileEntity.Create(newUser.value.Id, request.DateOfBirth, request.sex, request.consent);
 
             if (patienProfile.IsFailure)
                 return patienProfile.Error;

@@ -22,7 +22,6 @@
     <Folder Include="Features\ActivityLog\Commands\" />
     <Folder Include="Features\AdministratorProfile\" />
     <Folder Include="Features\ClinicalStaffProfile\" />
-    <Folder Include="Features\SlotCapacity\" />
     <Folder Include="Features\RefreshToken\" />
     <Folder Include="Features\SystemConfig\" />
     <Folder Include="Features\StorageStatus\" />

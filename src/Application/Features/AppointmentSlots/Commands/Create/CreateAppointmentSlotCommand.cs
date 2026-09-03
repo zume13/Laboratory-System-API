@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SharedKernel.Shared;
-namespace Application.Features.AppointmentSlots.Create
+namespace Application.Features.AppointmentSlots.Commands.Create
 {
     public record CreateAppointmentSlotCommand(
             DateTime date,
