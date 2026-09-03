@@ -4,7 +4,7 @@ using Domain.Aggregates.AppointmentSlot;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.AppointmentSlots.Delete
+namespace Application.Features.AppointmentSlots.Commands.Delete
 {
     public class DeleteAppointmentSlotCommandHandler : IRequestHandler<DeleteAppointmentSlotCommand, Result>
     {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.AppointmentSlots.Update
+namespace Application.Features.AppointmentSlots.Commands.Update
 {
     public class UpdateAppointmentSlotCommandValidator : AbstractValidator<UpdateAppointmentSlotCommand>
     {

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Constants;
 using Microsoft.AspNetCore.RateLimiting;
+using Application.Features.TestCategories.GetTestCategoryById;
 
 namespace Laboratory_Management_API.Controllers.TestCategoryController
 {
@@ -99,6 +100,20 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
         public async Task<IActionResult> GetActive()
         {
             var result = await _mediator.Send(new GetActiveTestCategoriesQuery());
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("getBy/{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var result = await _mediator.Send(new GetTestCategoryByIdQuery(id));
 
             if (result.IsFailure)
                 return BadRequest(result.Error);

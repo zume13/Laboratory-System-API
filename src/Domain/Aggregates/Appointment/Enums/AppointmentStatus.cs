@@ -6,6 +6,6 @@ namespace Domain.Aggregates.Appointment.Enums
         Booked,
         Cancelled,
         Completed,
-        NoShow
+        NoShow,
     }
 }

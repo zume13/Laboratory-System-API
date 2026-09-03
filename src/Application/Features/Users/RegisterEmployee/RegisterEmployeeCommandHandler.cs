@@ -1,8 +1,8 @@
 ﻿using Application.Abstractions.Auth;
 using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
-using Domain.Aggregates.Identity.ClinicalStaffProfile;
 using Domain.Aggregates.Identity.UserProfile.Enums;
+using ClinicalStaffProfileEntity = Domain.Aggregates.Identity.ClinicalStaffProfile.ClinicalStaffProfile;
 using Domain.ValueObjects;
 using MediatR;
 using SharedKernel.Shared;
@@ -51,7 +51,7 @@ namespace Application.Features.Users.RegisterEmployee
             if (newUser.IsFailure)
                 return newUser.Error;
 
-            var profile = ClinicalStaffProfile.Create(newUser.value.Id, request.staffRole);
+            var profile = ClinicalStaffProfileEntity.Create(newUser.value.Id, request.staffRole);
 
             if (profile.IsFailure)
                 return profile.Error;

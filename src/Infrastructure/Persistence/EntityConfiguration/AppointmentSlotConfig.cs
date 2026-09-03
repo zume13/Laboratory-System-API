@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.EntityConfiguration
             builder.ToTable("AppointmentSlots");
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Date).IsRequired();
+            builder.Property(x => x.Date).HasColumnType("timestamp without time zone").IsRequired();
 
             builder.OwnsOne(x => x.TimeRange, t =>
             {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.AppointmentSlots.Update
+namespace Application.Features.AppointmentSlots.Commands.Update
 {
     public record UpdateAppointmentSlotCommand(
         Guid appointmentSlotId,

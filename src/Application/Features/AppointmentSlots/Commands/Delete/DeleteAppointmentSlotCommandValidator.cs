@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.AppointmentSlots.Delete
+namespace Application.Features.AppointmentSlots.Commands.Delete
 {
     public class DeleteAppointmentSlotCommandValidator : AbstractValidator<DeleteAppointmentSlotCommand>
     {
