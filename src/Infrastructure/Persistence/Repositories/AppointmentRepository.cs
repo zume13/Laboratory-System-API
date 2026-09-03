@@ -34,7 +34,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<List<Appointment>> GetPastDueUnresolvedAsync(DateTime asOf, CancellationToken cancellationToken = default)
         {
-            var unresolved = new[] { AppointmentStatus.Booked, AppointmentStatus.Confirmed };
+            var unresolved = new[] { AppointmentStatus.Booked };
 
             return await (
                 from appointment in _dbContext.Appointments

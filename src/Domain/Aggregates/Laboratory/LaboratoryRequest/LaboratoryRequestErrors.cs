@@ -16,6 +16,10 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
         }
         public static class LaboratoryResult 
         { 
+            public static Error NotFound(Guid id) => Error.NotFound("Result.NotFound", $"No laboratory result found with id '{id}'.");
+            public static Error ResultAlreadyReleased => Error.Conflict("Result.AlreadyReleased", "The result has already been released.");
+            public static Error ResultAlreadyVoided => Error.Conflict("Result.AlreadyVoided", "The result has already been voided.");
+            public static Error InvalidFileType => Error.Conflict("Result.InvalidFileType", "The file type is not allowed. Only PDF files are accepted.");
         }
     }
 }
