@@ -11,5 +11,7 @@ namespace Domain.Aggregates.Appointment
         public static Error CannotRemoveLastTest => Error.Conflict("Appointment.CannotRemoveLastTest", "Cannot remove the last test from the appointment.");
         public static Error DuplicateTestCategory => Error.Conflict("Appointment.DuplicateTestCategory", "Cannot add a test with the same category as an existing test in the appointment.");
         public static Error NoTestsProvided => Error.Conflict("Appointment.NoTestsProvided", "At least one test must be provided for the appointment.");
+        public static Error TestAlreadyApproved => Error.Conflict("Appointment.TestAlreadyApproved", "The test has already been approved.");
+        public static Error TestNotApproved => Error.Conflict("Appointment.TestNotApproved", "The test has not been approved.");
     }
 }

@@ -1,11 +1,10 @@
-﻿
-using SharedKernel.Shared;
+﻿using SharedKernel.Shared;
 
-namespace Domain.Aggregates.Laboratory.LaboratoryRequest
+namespace Domain.Aggregates.LaboratoryOrder
 {
-    public static class LaboratoryRequestErrors
+    public static class LaboratoryOrderErrors
     {
-        public static class LaboratoryRequest
+        public static class Request
         {
             public static Error VoidedRequest => Error.Conflict("Request.Voided", "The laboratory request has been voided.");
             public static Error RequestAlreadyExitsts => Error.Conflict("Result.Exist", "The result already exists for this request");
@@ -13,6 +12,10 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
             public static Error ExistingPatientId => Error.Conflict("Request.ExistingPatientId", "The patient already has a laboratory request with the same patient ID.");
             public static Error ResultAlreadyAttached => Error.Conflict("Result.AlreadyAttached", "A result is already attached to this laboratory request.");
             public static Error NotFound(Guid id) => Error.NotFound("Request.NotFound", $"No laboratory request found with id '{id}'.");
+            public static Error NoRequestsProvided => Error.Conflict("Request.NoRequestsProvided", "No laboratory requests were provided.");
+            public static Error InvalidStatus => Error.Conflict("Request.InvalidStatus", "The laboratory request has an invalid status.");
+            public static Error RequestsStillPending => Error.Conflict("Request.RequestsStillPending", "There are still pending laboratory requests that need to be completed.");
+            public static Error DuplicateRequest => Error.Conflict("Request.DuplicateRequest", "A duplicate laboratory request already exists for this patient.");
         }
         public static class LaboratoryResult 
         { 

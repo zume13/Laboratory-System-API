@@ -2,7 +2,7 @@
 using LMS.SharedKernel.Primitives;
 using SharedKernel.Shared;
 
-namespace Domain.Aggregates.Laboratory.LaboratoryRequest
+namespace Domain.Aggregates.LaboratoryOrder
 {
     public class LaboratoryResult : Entity
     {
@@ -45,12 +45,34 @@ namespace Domain.Aggregates.Laboratory.LaboratoryRequest
             if (uploadedByStaffId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(uploadedByStaffId));
 
+            if (string.IsNullOrWhiteSpace(sampleId))
+                return GeneralErrors.General.Invalid(nameof(sampleId));
+
             return new LaboratoryResult(Guid.NewGuid(), laboratoryRequestId, uploadedByStaffId, pdfPath, sampleId);
         }
 
-        internal void MarkReleased() => ReleaseDate = DateTime.UtcNow;
+        internal Result Release()
+        {
+            if (IsVoided)
+                return LaboratoryOrderErrors.LaboratoryResult.ResultAlreadyVoided;
 
-        internal void Void() => IsVoided = true;
+            if (ReleaseDate.HasValue)
+                return LaboratoryOrderErrors.LaboratoryResult.ResultAlreadyReleased;
+
+            ReleaseDate = DateTime.UtcNow;
+
+            return Result.Success();
+        }
+
+        internal Result Void()
+        {
+            if (IsVoided)
+                return LaboratoryOrderErrors.LaboratoryResult.ResultAlreadyVoided;
+
+            IsVoided = true;
+
+            return Result.Success();
+        }
     }
 
 }

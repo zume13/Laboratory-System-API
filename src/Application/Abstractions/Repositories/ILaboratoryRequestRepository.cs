@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Base;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 
 namespace Application.Abstractions.Repositories
 {

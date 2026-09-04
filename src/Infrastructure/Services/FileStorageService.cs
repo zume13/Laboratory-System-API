@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.FileStorage;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using Microsoft.Extensions.Configuration;
 using SharedKernel.Shared;
 

@@ -1,4 +1,4 @@
-﻿using Domain.Aggregates.Laboratory.LaboratoryRequest;
+﻿using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

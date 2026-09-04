@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.Identity.PatientProfile;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using MediatR;
 using SharedKernel.Shared;
 

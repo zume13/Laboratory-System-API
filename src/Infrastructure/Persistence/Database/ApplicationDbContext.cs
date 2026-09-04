@@ -7,7 +7,7 @@ using Domain.Aggregates.Identity.AdministratorProfile;
 using Domain.Aggregates.Identity.ClinicalStaffProfile;
 using Domain.Aggregates.Identity.PatientProfile;
 using Domain.Aggregates.Identity.UserProfile;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using Domain.Aggregates.Laboratory.TestCategory;
 using Domain.Aggregates.Monitoring.ActivityLog;
 using Domain.Aggregates.Monitoring.StorageStatus;
@@ -16,6 +16,7 @@ using Domain.Aggregates.RefreshToken;
 using Domain.Aggregates.SlotCapacity;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Shared;
+using Domain.Aggregates.LaboratoryOrder;
 
 namespace Infrastructure.Persistence.Database
 {

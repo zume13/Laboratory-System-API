@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using Infrastructure.Persistence.Database;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

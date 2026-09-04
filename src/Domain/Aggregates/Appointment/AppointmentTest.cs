@@ -11,13 +11,14 @@ namespace Domain.Aggregates.Appointment
         {
             AppointmentId = appointmentId;
             TestCategoryId = testCategoryId;
+            isApproved = false;
         }
 
         public Guid AppointmentId { get; private set; }
 
         public Guid TestCategoryId { get; private set; }
-        public bool Approved { get; private set; }
 
+        public bool isApproved { get; private set; }    
 
         // internal — only the Appointment aggregate root is allowed to create/mutate
         // these; consumers go through Appointment's methods.
@@ -31,9 +32,19 @@ namespace Domain.Aggregates.Appointment
 
         internal Result Approve()
         {
-            if (Approved)
+            if (isApproved)
                 return AppointmentErrors.TestAlreadyApproved;
-            Approved = true;
+
+            isApproved = true;
+
+            return Result.Success();
+        }
+
+        internal Result Cancel()
+        {
+            if (!isApproved)
+                return AppointmentErrors.TestNotApproved;
+            isApproved = false;
             return Result.Success();
         }
     }

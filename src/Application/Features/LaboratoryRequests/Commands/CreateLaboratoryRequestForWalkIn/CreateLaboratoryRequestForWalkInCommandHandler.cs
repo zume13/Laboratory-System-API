@@ -1,9 +1,10 @@
 ﻿using Application.Abstractions.Base;
 using Application.Abstractions.Repositories;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using Domain.Aggregates.Laboratory.TestCategory;
 using MediatR;
 using SharedKernel.Shared;
+using Domain.Aggregates.LaboratoryOrder;
 
 namespace Application.Features.LaboratoryRequests.Commands.CreateLaboratoryRequestForWalkIn
 {

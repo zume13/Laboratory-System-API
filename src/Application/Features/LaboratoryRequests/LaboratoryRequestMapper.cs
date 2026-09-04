@@ -1,5 +1,6 @@
 ﻿using Application.Dto;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 
 namespace Application.Features.LaboratoryRequests
 {

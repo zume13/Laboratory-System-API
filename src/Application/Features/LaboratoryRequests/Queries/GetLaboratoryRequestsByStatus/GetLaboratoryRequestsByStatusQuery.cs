@@ -1,5 +1,4 @@
 ﻿using Application.Dto;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
 using MediatR;
 using SharedKernel.Shared;
 

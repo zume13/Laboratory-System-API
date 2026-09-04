@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Dto;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
 using MediatR;
 using SharedKernel.Shared;
 

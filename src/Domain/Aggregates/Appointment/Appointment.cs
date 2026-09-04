@@ -179,5 +179,51 @@ namespace Domain.Aggregates.Appointment
 
             return reminder.value;
         }
+
+        public Result Complete()
+        {
+            if (Status != AppointmentStatus.Booked)
+                return AppointmentErrors.InvalidStatus;
+
+            Status = AppointmentStatus.Completed;
+
+            return Result.Success();
+        }
+
+        public Result ApproveAppointmentTest(Guid appointmentTestId)
+        {
+            if (Status != AppointmentStatus.Booked)
+                return AppointmentErrors.InvalidStatus;
+
+            var test = _tests.FirstOrDefault(t => t.Id == appointmentTestId);
+
+            if (test is null)
+                return AppointmentErrors.TestNotFound;
+
+            var approveResult = test.Approve();
+
+            if (approveResult.IsFailure)
+                return approveResult.Error;
+
+            return Result.Success();
+        }
+
+        public Result RejectAppointmentTest(Guid appointmentTestId)
+        {
+            if (Status != AppointmentStatus.Booked)
+                return AppointmentErrors.InvalidStatus;
+
+            var test = _tests.FirstOrDefault(t => t.Id == appointmentTestId);
+
+            if (test is null)
+                return AppointmentErrors.TestNotFound;
+
+            var rejectResult = test.Cancel();
+
+            if (rejectResult.IsFailure)
+                return rejectResult.Error;
+
+            return Result.Success();
+        }
     }
 }

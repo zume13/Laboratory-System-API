@@ -10,7 +10,6 @@ using Application.Features.LaboratoryRequests.Queries.GetMyLaboratoryRequests;
 using Application.Features.LaboratoryRequests.Queries.GetUnlinkedWalkInRequests;
 using Application.Features.LaboratoryRequests.Commands.ReleaseLaboratoryResult;
 using Application.Features.LaboratoryRequests.Commands.VoidLaboratoryRequest;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 
-
 namespace Application.Features.TestCategories.Commands.UpdateTestCategoryPrice
 {
     public class UpdateTestCategoryPriceCommandValidator : AbstractValidator<UpdateTestCategoryPriceCommand>

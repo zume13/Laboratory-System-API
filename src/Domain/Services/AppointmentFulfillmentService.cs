@@ -1,16 +1,48 @@
 ﻿using Domain.Aggregates.Appointment;
-using Domain.Aggregates.Laboratory.LaboratoryRequest;
+using Domain.Aggregates.Appointment.Enums;
+using Domain.Aggregates.Laboratory;
+using Domain.Aggregates.LaboratoryOrder;
 using SharedKernel.Shared;
 
 namespace Domain.Services
 {
     public static class AppointmentFulfillmentService
     {
-        // Converts a confirmed Appointment into an actual diagnostic transaction.
-        public static ResultT<LaboratoryRequest> Complete(Appointment appointment, string clinicalDetails)
+        public static ResultT<LaboratoryRequestOrder> Fulfill(
+            Appointment appointment)
         {
+            var createOrderResult =
+                LaboratoryRequestOrder.Create(
+                    appointment.PatientId,
+                    appointment.Id);
 
+            if (createOrderResult.IsFailure)
+                return createOrderResult.Error;
+
+            var order = createOrderResult.value;
+
+            foreach (var appointmentTest in appointment.Tests)
+            {
+                if (appointmentTest.isApproved == false)
+                    continue;
+
+                var requestResult = order.AddRequest(
+                    appointmentTest.TestCategoryId);
+
+                if (requestResult.IsFailure)
+                    return requestResult.Error;
+            }
+
+            if (order.Requests.Count == 0)
+                return LaboratoryOrderErrors.Request.NoRequestsProvided;
+
+            var completeAppointmentResult =
+                appointment.Complete();
+
+            if (completeAppointmentResult.IsFailure)
+                return completeAppointmentResult.Error;
+
+            return order;
         }
     }
-
 }
