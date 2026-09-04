@@ -127,13 +127,15 @@ namespace Domain.Aggregates.Appointment
             if (Status != AppointmentStatus.Booked)
                 return AppointmentErrors.InvalidStatus;
 
+            if (_tests.Any(t => t.TestCategoryId == testCategoryId))
+                return AppointmentErrors.DuplicateTestCategory;
+
             var test = AppointmentTest.Create(Id, testCategoryId);
 
             if (test.IsFailure)
                 return test.Error;
 
             _tests.Add(test.value);
-
             return test.value;
         }
 
@@ -146,10 +148,13 @@ namespace Domain.Aggregates.Appointment
                 return AppointmentErrors.InvalidStatus;
 
             var test = _tests.FirstOrDefault(t => t.Id == appointmentTestId);
-
             if (test is null)
                 return AppointmentErrors.TestNotFound;
 
+            if (_tests.Count <= 1)
+                return AppointmentErrors.CannotRemoveLastTest;
+
+            _tests.Remove(test);
             return Result.Success();
         }
 
