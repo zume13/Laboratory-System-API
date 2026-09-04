@@ -13,5 +13,6 @@ namespace Domain.Aggregates.Appointment
         public static Error NoTestsProvided => Error.Conflict("Appointment.NoTestsProvided", "At least one test must be provided for the appointment.");
         public static Error TestAlreadyApproved => Error.Conflict("Appointment.TestAlreadyApproved", "The test has already been approved.");
         public static Error TestNotApproved => Error.Conflict("Appointment.TestNotApproved", "The test has not been approved.");
+        public static Error AppointmentTestNotFound => Error.NotFound("Appointment.AppointmentTestNotFound", "The appointment test was not found.");
     }
 }

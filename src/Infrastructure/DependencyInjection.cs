@@ -30,7 +30,6 @@ namespace Infrastructure
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IAppointmentSlotRepository, AppointmentSlotRepository>();
             services.AddScoped<IClinicalProfileRepository, ClinicalProfileRepository>();
-            services.AddScoped<ILaboratoryRequestRepository, LaboratoryRequestRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IPatientProfileRepository, PatientProfileRepository>();
             services.AddScoped<ISlotCapacityRepository, SlotCapacityRepository>();

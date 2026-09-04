@@ -1,7 +1,5 @@
 ﻿using Domain.Aggregates.Appointment;
-using Domain.Aggregates.Appointment.Enums;
-using Domain.Aggregates.Laboratory;
-using Domain.Aggregates.LaboratoryOrder;
+using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using SharedKernel.Shared;
 
 namespace Domain.Services

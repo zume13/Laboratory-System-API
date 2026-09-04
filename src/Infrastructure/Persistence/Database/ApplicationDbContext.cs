@@ -7,16 +7,14 @@ using Domain.Aggregates.Identity.AdministratorProfile;
 using Domain.Aggregates.Identity.ClinicalStaffProfile;
 using Domain.Aggregates.Identity.PatientProfile;
 using Domain.Aggregates.Identity.UserProfile;
-using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
-using Domain.Aggregates.Laboratory.TestCategory;
 using Domain.Aggregates.Monitoring.ActivityLog;
 using Domain.Aggregates.Monitoring.StorageStatus;
 using Domain.Aggregates.Monitoring.SystemConfig;
 using Domain.Aggregates.RefreshToken;
 using Domain.Aggregates.SlotCapacity;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Shared;
-using Domain.Aggregates.LaboratoryOrder;
+using Domain.Aggregates.Laboratory.TestCategory;
+using Domain.Aggregates.Laboratory.LaboratoryOrder;
 
 namespace Infrastructure.Persistence.Database
 {
@@ -35,7 +33,7 @@ namespace Infrastructure.Persistence.Database
 
         // Laboratory
         public DbSet<TestCategory> TestCategories => Set<TestCategory>();
-        public DbSet<LaboratoryRequest> LabRequests => Set<LaboratoryRequest>();
+        public DbSet<LaboratoryRequestOrder> LabOrders => Set<LaboratoryRequestOrder>();
         // LabResult intentionally has no DbSet — only reachable via LabRequest.Results.
 
         // Notifications

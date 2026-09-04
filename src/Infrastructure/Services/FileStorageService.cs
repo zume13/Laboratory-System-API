@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.FileStorage;
-using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
+using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using Microsoft.Extensions.Configuration;
 using SharedKernel.Shared;
 
@@ -22,7 +22,7 @@ namespace Infrastructure.Services
             var extension = Path.GetExtension(fileName)?.TrimStart('.').ToLowerInvariant();
 
             if(string.IsNullOrEmpty(extension) || !allowedFileExtensions.Contains(extension))
-                return LaboratoryRequestErrors.LaboratoryResult.InvalidFileType;
+                return LaboratoryOrderErrors.LaboratoryResult.InvalidFileType;
 
             var folder = Path.Combine(_rootPath, subFolder);
 
@@ -48,7 +48,7 @@ namespace Infrastructure.Services
                 return fullPath.Error;
 
             if (!File.Exists(fullPath.value))
-                return LaboratoryRequestErrors.LaboratoryResult.FileNotFound(relativePath);
+                return LaboratoryOrderErrors.LaboratoryResult.FileNotFound(relativePath);
 
             Stream stream = File.OpenRead(fullPath.value);
 
@@ -63,7 +63,7 @@ namespace Infrastructure.Services
                 return fullPath.Error;
 
             if (!File.Exists(fullPath.value))
-                return LaboratoryRequestErrors.LaboratoryResult.FileNotFound(relativePath);
+                return LaboratoryOrderErrors.LaboratoryResult.FileNotFound(relativePath);
 
             File.Delete(fullPath.value);
 
@@ -85,7 +85,7 @@ namespace Infrastructure.Services
             var fullPath = Path.GetFullPath(Path.Combine(_rootPath, relativePath));
 
             if (!fullPath.StartsWith(Path.GetFullPath(_rootPath), StringComparison.OrdinalIgnoreCase))
-                return LaboratoryRequestErrors.LaboratoryResult.InvalidFilePath;
+                return LaboratoryOrderErrors.LaboratoryResult.InvalidFilePath;
 
             return fullPath;
         }

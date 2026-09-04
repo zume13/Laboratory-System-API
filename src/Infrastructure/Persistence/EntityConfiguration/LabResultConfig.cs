@@ -1,26 +1,53 @@
-﻿using Domain.Aggregates.LaboratoryOrder.LaboratoryRequest;
+﻿using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.EntityConfiguration
+namespace Infrastructure.Persistence.Configurations;
+
+public sealed class LaboratoryResultConfiguration
+    : IEntityTypeConfiguration<LaboratoryResult>
 {
-    public class LabResultConfig : IEntityTypeConfiguration<LaboratoryResult>
+    public void Configure(EntityTypeBuilder<LaboratoryResult> builder)
     {
-        public void Configure(EntityTypeBuilder<LaboratoryResult> builder)
+        builder.ToTable("LaboratoryResults");
+
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.LaboratoryRequestId)
+            .IsRequired();
+
+        builder.Property(x => x.UploadedByStaffId)
+            .IsRequired();
+
+        builder.Property(x => x.SampleId)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(x => x.UploadedAt)
+            .IsRequired();
+
+        builder.Property(x => x.ReleaseDate)
+            .IsRequired(false);
+
+        builder.Property(x => x.IsVoided)
+            .IsRequired();
+
+        builder.OwnsOne(x => x.PdfPath, pdfPath =>
         {
-            builder.ToTable("LabResults");
-            builder.HasKey(x => x.Id);
+            pdfPath.Property(x => x.value)
+                .HasColumnName("PdfPath")
+                .IsRequired()
+                .HasMaxLength(500);
+        });
 
-            builder.Property(x => x.LaboratoryRequestId).IsRequired();
-            builder.Property(x => x.UploadedByStaffId).IsRequired();
+        builder.HasOne<LaboratoryRequest>()
+            .WithOne()
+            .HasForeignKey<LaboratoryResult>(x => x.LaboratoryRequestId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
-            builder.OwnsOne(x => x.PdfPath, p =>
-                p.Property(v => v.value).HasColumnName("PdfFilePath").IsRequired().HasMaxLength(300));
-
-            builder.Property(x => x.SampleId).HasMaxLength(50);
-            builder.Property(x => x.ReleaseDate);
-            builder.Property(x => x.IsVoided).IsRequired();
-            builder.Property(x => x.UploadedAt).IsRequired();
-        }
+        // Prevent multiple results for the same request
+        builder.HasIndex(x => x.LaboratoryRequestId)
+            .IsUnique();
     }
 }

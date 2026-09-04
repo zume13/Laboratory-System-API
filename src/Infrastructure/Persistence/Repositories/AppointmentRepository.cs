@@ -51,10 +51,13 @@ namespace Infrastructure.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Appointment?> GetByFulfillingLabRequestIdAsync(Guid laboratoryRequestId, CancellationToken cancellationToken = default)
+        public async Task<Appointment?> GetAppointmentWithAppointmentTestAsync(Guid appointmentId, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Appointments
-                .FirstOrDefaultAsync(a => a.FulfillingLabRequestId == laboratoryRequestId, cancellationToken);
+                .Include(a => a.Tests)
+                .FirstOrDefaultAsync(
+                    a => a.Id == appointmentId,
+                    cancellationToken);
         }
     }
 }

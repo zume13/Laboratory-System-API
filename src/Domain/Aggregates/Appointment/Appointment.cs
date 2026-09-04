@@ -136,6 +136,7 @@ namespace Domain.Aggregates.Appointment
                 return test.Error;
 
             _tests.Add(test.value);
+
             return test.value;
         }
 
