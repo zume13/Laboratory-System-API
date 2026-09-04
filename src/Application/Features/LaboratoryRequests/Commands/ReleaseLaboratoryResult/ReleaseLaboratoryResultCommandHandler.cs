@@ -22,10 +22,12 @@ namespace Application.Features.LaboratoryRequests.Commands.ReleaseLaboratoryResu
         public async Task<Result> Handle(ReleaseLaboratoryResultCommand request, CancellationToken cancellationToken)
         {
             var labRequest = await _laboratoryRequestRepository.GetByIdAsync(request.laboratoryRequestId, cancellationToken);
+
             if (labRequest is null)
                 return LaboratoryRequestErrors.LaboratoryRequest.NotFound(request.laboratoryRequestId);
 
             var releaseResult = labRequest.Release();
+
             if (releaseResult.IsFailure)
                 return releaseResult.Error;
 

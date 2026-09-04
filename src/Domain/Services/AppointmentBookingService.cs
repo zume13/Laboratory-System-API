@@ -13,7 +13,7 @@ namespace Domain.Services
         public static ResultT<Appointment> Book(
             AppointmentSlot slot,
             Guid patientId,
-            Guid testCategoryId,
+            IEnumerable<Guid> testCategoryIds,
             BookingChannel channel)
         {
             var reserveResult = slot.Reserve();
@@ -21,7 +21,7 @@ namespace Domain.Services
             if (reserveResult.IsFailure)
                 return reserveResult.Error;
 
-            var book = Appointment.Create(patientId, slot.Id, testCategoryId, channel);
+            var book = Appointment.Create(patientId, slot.Id, channel, testCategoryIds);
 
             if(book.IsFailure)
                 return book.Error;

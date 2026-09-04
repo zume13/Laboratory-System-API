@@ -28,7 +28,7 @@ namespace Application.Features.Appointments.Commands.CreateOnlineAppointment
             if (slot == null)
                 return AppointmentSlotErrors.NotFound(request.appointmentSlotId);
 
-            var bookSlot = AppointmentBookingService.Book(slot, request.patientId, request.testCategoryId, BookingChannel.Online);
+            var bookSlot = AppointmentBookingService.Book(slot, request.patientId, request.testCategoryIds, BookingChannel.Online);
 
             if(bookSlot.IsFailure)
                 return bookSlot.Error;

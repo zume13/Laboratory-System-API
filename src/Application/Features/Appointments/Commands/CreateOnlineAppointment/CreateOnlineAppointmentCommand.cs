@@ -7,5 +7,5 @@ namespace Application.Features.Appointments.Commands.CreateOnlineAppointment
     public record CreateOnlineAppointmentCommand(
             Guid patientId,
             Guid appointmentSlotId,
-            Guid testCategoryId) : IRequest<ResultT<Guid>>;
+            IEnumerable<Guid> testCategoryIds) : IRequest<ResultT<Guid>>;
 }

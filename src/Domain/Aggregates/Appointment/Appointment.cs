@@ -7,6 +7,7 @@ namespace Domain.Aggregates.Appointment
 {
     public class Appointment : AggregateRoot
     {
+        private readonly List<AppointmentTest> _tests = new();
         private readonly List<AppointmentReminder> _reminders = new();
 
         private Appointment() { }
@@ -14,13 +15,11 @@ namespace Domain.Aggregates.Appointment
             Guid id,
             Guid patientId,
             Guid appointmentSlotId,
-            Guid testCategoryId,
             BookingChannel bookingChannel)
             : base(id)
         {
             PatientId = patientId;
             AppointmentSlotId = appointmentSlotId;
-            TestCategoryId = testCategoryId;
             BookingChannel = bookingChannel;
             Status = AppointmentStatus.Booked;
             CreatedAt = DateTime.UtcNow;
@@ -30,10 +29,6 @@ namespace Domain.Aggregates.Appointment
 
         public Guid AppointmentSlotId { get; private set; }
 
-        public Guid TestCategoryId { get; private set; }
-
-        public Guid? FulfillingLabRequestId { get; private set; }
-
         public AppointmentStatus Status { get; private set; }
 
         public BookingChannel BookingChannel { get; private set; }
@@ -41,6 +36,8 @@ namespace Domain.Aggregates.Appointment
         public DateTime CreatedAt { get; private set; }
 
         public DateTime? ConfirmedAt { get; private set; }
+
+        public IReadOnlyCollection<AppointmentTest> Tests => _tests.AsReadOnly();
 
         public IReadOnlyCollection<AppointmentReminder> Reminders => _reminders.AsReadOnly();
 
@@ -51,8 +48,8 @@ namespace Domain.Aggregates.Appointment
         public static ResultT<Appointment> Create(
             Guid patientId,
             Guid appointmentSlotId,
-            Guid testCategoryId,
-            BookingChannel bookingChannel)
+            BookingChannel bookingChannel,
+            IEnumerable<Guid> testCategoryIds)
         {
             if (patientId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(patientId));
@@ -60,15 +57,33 @@ namespace Domain.Aggregates.Appointment
             if (appointmentSlotId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(appointmentSlotId));
 
-            if (testCategoryId == Guid.Empty)
-                return GeneralErrors.General.Empty(nameof(testCategoryId));
+            var distinctTestCategoryIds = (testCategoryIds ?? Enumerable.Empty<Guid>())
+                .Distinct()
+                .ToList();
 
-            return new Appointment(
+            if (distinctTestCategoryIds.Count == 0)
+                return AppointmentErrors.NoTestsProvided;
+
+            if (distinctTestCategoryIds.Any(id => id == Guid.Empty))
+                return GeneralErrors.General.Empty(nameof(testCategoryIds));
+
+            var appointment = new Appointment(
                 Guid.NewGuid(),
                 patientId,
                 appointmentSlotId,
-                testCategoryId,
                 bookingChannel);
+
+            foreach (var testCategoryId in distinctTestCategoryIds)
+            {
+                var test = AppointmentTest.Create(appointment.Id, testCategoryId);
+
+                if (test.IsFailure)
+                    return test.Error;
+
+                appointment._tests.Add(test.value);
+            }
+
+            return appointment;
         }
 
         public Result Reserve()
@@ -96,7 +111,7 @@ namespace Domain.Aggregates.Appointment
 
         public Result MarkNoShow()
         {
-            if (Status is not (AppointmentStatus.Booked))
+            if (Status is not AppointmentStatus.Booked)
                 return AppointmentErrors.InvalidStatus;
 
             Status = AppointmentStatus.NoShow;
@@ -104,18 +119,36 @@ namespace Domain.Aggregates.Appointment
             return Result.Success();
         }
 
-        // Records that a LabRequest (a separate aggregate) now fulfills this appointment.
-        // The LabRequest itself is created by the application layer via LabRequest.Create(...).
-        public Result CompleteWithLabRequest(Guid labRequestId)
+        // Adds another test to a still-booked appointment (e.g. the patient requests
+        // an extra panel at check-in). Each test is fulfilled by its own LabRequest
+        // downstream, so they can complete independently of one another.
+        public ResultT<AppointmentTest> AddTest(Guid testCategoryId)
         {
             if (Status != AppointmentStatus.Booked)
                 return AppointmentErrors.InvalidStatus;
 
-            if (labRequestId == Guid.Empty)
-                return GeneralErrors.General.Empty(nameof(labRequestId));
+            var test = AppointmentTest.Create(Id, testCategoryId);
 
-            FulfillingLabRequestId = labRequestId;
-            Status = AppointmentStatus.Completed;
+            if (test.IsFailure)
+                return test.Error;
+
+            _tests.Add(test.value);
+
+            return test.value;
+        }
+
+        // Cancels a single test before it's been fulfilled — e.g. the patient decides
+        // against one of several panels. Won't remove the last remaining pending test;
+        // cancel the whole appointment instead if none should go ahead.
+        public Result RemoveTest(Guid appointmentTestId)
+        {
+            if (Status != AppointmentStatus.Booked)
+                return AppointmentErrors.InvalidStatus;
+
+            var test = _tests.FirstOrDefault(t => t.Id == appointmentTestId);
+
+            if (test is null)
+                return AppointmentErrors.TestNotFound;
 
             return Result.Success();
         }
@@ -126,16 +159,6 @@ namespace Domain.Aggregates.Appointment
                 return GeneralErrors.General.Empty(nameof(appointmentSlotId));
 
             AppointmentSlotId = appointmentSlotId;
-
-            return Result.Success();
-        }
-
-        public Result ChangeTestCategory(Guid testCategoryId)
-        {
-            if (testCategoryId == Guid.Empty)
-                return GeneralErrors.General.Empty(nameof(testCategoryId));
-
-            TestCategoryId = testCategoryId;
 
             return Result.Success();
         }

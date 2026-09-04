@@ -32,7 +32,7 @@ namespace Application.Features.Appointments.Commands.CreateWalkInAppointment
             var bookSlot = AppointmentBookingService.Book(
                 slot,
                 request.patientId,
-                request.testCategoryId, 
+                request.testCategoryIds, 
                 BookingChannel.WalkIn);
 
             if(bookSlot.IsFailure)

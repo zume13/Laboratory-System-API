@@ -37,23 +37,57 @@ namespace Infrastructure.Services
                 await fileStream.CopyToAsync(destination, cancellationToken);
             }
 
-            // Relative path is what gets persisted on the aggregate (PdfPath).
             return Path.Combine(subFolder, storedFileName).Replace('\\', '/');
         }
 
-        public Task<ResultT<Stream>> GetFileAsync(string relativePath, CancellationToken cancellationToken = default)
+        public async Task<ResultT<Stream>> GetFileAsync(string relativePath, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var fullPath = ResolveSafePath(relativePath);   
+
+            if(fullPath.IsFailure)
+                return fullPath.Error;
+
+            if (!File.Exists(fullPath.value))
+                return LaboratoryRequestErrors.LaboratoryResult.FileNotFound(relativePath);
+
+            Stream stream = File.OpenRead(fullPath.value);
+
+            return ResultT<Stream>.Success(stream);
         }
 
-        public Task<Result> DeleteFileAsync(string relativePath, CancellationToken cancellationToken = default)
+        public async Task<ResultT<bool>> DeleteFileAsync(string relativePath, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var fullPath = ResolveSafePath(relativePath);
+
+            if (fullPath.IsFailure)
+                return fullPath.Error;
+
+            if (!File.Exists(fullPath.value))
+                return LaboratoryRequestErrors.LaboratoryResult.FileNotFound(relativePath);
+
+            File.Delete(fullPath.value);
+
+            return ResultT<bool>.Success(true); 
         }
 
         public bool Exists(string relativePath)
         {
-            throw new NotImplementedException();
+            var fullPath = ResolveSafePath(relativePath);
+
+            if (fullPath.IsFailure)
+                return false;
+
+            return File.Exists(fullPath.value);
+        }
+
+        private ResultT<string> ResolveSafePath(string relativePath)
+        {
+            var fullPath = Path.GetFullPath(Path.Combine(_rootPath, relativePath));
+
+            if (!fullPath.StartsWith(Path.GetFullPath(_rootPath), StringComparison.OrdinalIgnoreCase))
+                return LaboratoryRequestErrors.LaboratoryResult.InvalidFilePath;
+
+            return fullPath;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Application.Features.Appointments.Commands.CreateWalkInAppointment
         {
             RuleFor(x => x.patientId).NotEmpty().WithMessage("PatientId is required.");
             RuleFor(x => x.appointmentSlotId).NotEmpty().WithMessage("AppointmentSlotId is required.");
-            RuleFor(x => x.testCategoryId).NotEmpty().WithMessage("TestCategoryId is required.");
+            RuleFor(x => x.testCategoryIds).NotEmpty().WithMessage("TestCategoryIds is required.");
         }
     }
 }
