@@ -58,7 +58,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             return request.value;
         }
 
-        public ResultT<LaboratoryRequest> RemoveRequest(Guid testCategoryId)
+        public Result RemoveRequest(Guid testCategoryId)
         {
             if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
                 return LaboratoryOrderErrors.Request.InvalidStatus;
@@ -66,17 +66,16 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             if (testCategoryId == Guid.Empty)
                 return GeneralErrors.General.Empty(nameof(testCategoryId));
 
-            if (_requests.Any(r => r.TestCategoryId == testCategoryId && r.Status != RequestStatus.Voided))
-                return LaboratoryOrderErrors.Request.DuplicateRequest;
+            var request = _requests.FirstOrDefault(r =>
+                r.TestCategoryId == testCategoryId &&
+                r.Status != RequestStatus.Voided);
 
-            var request = LaboratoryRequest.Create(Id, PatientId, testCategoryId);
+            if (request is null)
+                return LaboratoryOrderErrors.Request.NotFound(testCategoryId);
 
-            if (request.IsFailure)
-                return request.Error;
+            request.Void();
 
-            _requests.Remove(request.value);
-
-            return request.value;
+            return Result.Success();
         }
 
         /// <summary> /// Completes the order only when all active requests /// have been completed. /// </summary> 

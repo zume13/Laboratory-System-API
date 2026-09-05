@@ -4,6 +4,14 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
 {
     public static class LaboratoryOrderErrors
     {
+
+        public static class LabOrder
+        {
+            public static Error NotFound => Error.Conflict("LabOrder.NotFound", "Lab Order not found.");
+            public static Error AlreadyCancelled =>  Error.Conflict("LabOrder.AlreadyCancelled", "Lab Order is already cancelled.");
+        }
+
+
         public static class Request
         {
             public static Error VoidedRequest => Error.Conflict("Request.Voided", "The laboratory request has been voided.");

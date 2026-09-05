@@ -6,17 +6,17 @@ using SharedKernel.Shared;
 
 namespace Application.Features.Appointments.Commands.CancelAppointmentTest
 {
-    public class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand, Result>
+    public class CancelAppointmentTestCommandHandler : IRequestHandler<CancelAppointmentTestCommand, Result>
     {
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CancelAppointmentCommandHandler(IAppointmentRepository appointmentRepository, IUnitOfWork unitOfWork)
+        public CancelAppointmentTestCommandHandler(IAppointmentRepository appointmentRepository, IUnitOfWork unitOfWork)
         {
             _appointmentRepository = appointmentRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result> Handle(CancelAppointmentCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CancelAppointmentTestCommand request, CancellationToken cancellationToken)
         {
             var appointment = await _appointmentRepository.GetAppointmentWithAppointmentTestAsync(request.appointmentId, cancellationToken);
 

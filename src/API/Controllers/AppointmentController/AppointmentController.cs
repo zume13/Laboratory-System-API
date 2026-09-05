@@ -1,6 +1,12 @@
-﻿using Application.Dto;
-using Application.Features.AppointmentTests.Commands.AddTestToAppointment;
-using Application.Features.AppointmentTests.Commands.RemoveTestFromAppointment;
+﻿using Application.Features.Appointments.Commands.AddAppointmentTest;
+using Application.Features.Appointments.Commands.ApproveAppointmentTest;
+using Application.Features.Appointments.Commands.CancelAppointment;
+using Application.Features.Appointments.Commands.CancelAppointmentTest;
+using Application.Features.Appointments.Commands.CreateOnlineAppointment;
+using Application.Features.Appointments.Commands.CreateWalkInAppointment;
+using Application.Features.Appointments.Commands.MarkAppointmentNoShow;
+using Application.Features.Appointments.Commands.RemoveAppointmentTest;
+using Application.Features.Appointments.Commands.RescheduleAppointment;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +15,12 @@ using SharedKernel.Constants;
 
 namespace Laboratory_Management_API.Controllers.AppointmentController
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class AppointmentController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public AppointmentController(IMediator mediator)
         {
             _mediator = mediator;
@@ -19,25 +28,120 @@ namespace Laboratory_Management_API.Controllers.AppointmentController
 
         [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
         [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpPost("{id}/add-test")]
-        public async Task<IActionResult> AddTest(Guid id, AddTestToAppointmentDto dto)
+        [HttpPost("online")]
+        public async Task<IActionResult> CreateOnlineAppointment(
+            CreateOnlineAppointmentCommand command)
         {
-            var command = new AddTestToAppointmentCommand(id, dto.testCategoryId);
-
             var result = await _mediator.Send(command);
-            if (result.IsFailure) return BadRequest(result.Error);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
             return Ok(result.value);
         }
 
         [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
         [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpDelete("{id}/remove-test/{appointmentTestId}")]
-        public async Task<IActionResult> RemoveTest(Guid id, Guid appointmentTestId)
+        [HttpPost("walk-in")]
+        public async Task<IActionResult> CreateWalkInAppointment(
+            CreateWalkInAppointmentCommand command)
         {
-            var command = new RemoveTestFromAppointmentCommand(id, appointmentTestId);
-
             var result = await _mediator.Send(command);
-            if (result.IsFailure) return BadRequest(result.Error);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{appointmentId}/cancel")]
+        public async Task<IActionResult> CancelAppointment(CancelAppointmentCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPut("{appointmentId}/reschedule")]
+        public async Task<IActionResult> RescheduleAppointment(RescheduleAppointmentCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{appointmentId}/tests")]
+        public async Task<IActionResult> AddTest(AddAppointmentTestCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpDelete("{appointmentId}/tests/{appointmentTestId}")]
+        public async Task<IActionResult> RemoveTest(RemoveAppointmentTestCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return NoContent();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{appointmentId}/tests/{appointmentTestId}/approve")]
+        public async Task<IActionResult> ApproveAppointmentTest(AproveAppointmentTestCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{appointmentId}/tests/{appointmentTestId}/cancel")]
+        public async Task<IActionResult> CancelAppointmentTest(CancelAppointmentTestCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{appointmentId}/no-show")]
+        public async Task<IActionResult> MarkNoShow(MarkAppointmentNoShowCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
             return Ok();
         }
     }

@@ -2,9 +2,9 @@
 
 namespace Application.Features.Appointments.Commands.CancelAppointmentTest
 {
-    public class CancelAppointmentCommandValidator : AbstractValidator<CancelAppointmentCommand>
+    public class CancelAppointmentTestCommandValidator : AbstractValidator<CancelAppointmentTestCommand>
     {
-        public CancelAppointmentCommandValidator()
+        public CancelAppointmentTestCommandValidator()
         {
             RuleFor(x => x.appointmentTestId)
                 .NotEmpty()
