@@ -3,7 +3,6 @@
     public enum RequestStatus
     {
         Pending,
-        Released,
         Voided,
         Completed
     }

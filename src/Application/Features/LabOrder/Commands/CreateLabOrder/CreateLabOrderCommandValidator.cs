@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.LabOrder.CreateLabOrder
+namespace Application.Features.LabOrder.Commands.CreateLabOrder
 {
     public class CreateLabOrderCommandValidator : AbstractValidator<CreateLabOrderCommand>
     {

@@ -4,7 +4,7 @@ using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.LabOrder.RemoveLabRequest
+namespace Application.Features.LabOrder.Commands.RemoveLabRequest
 {
     public class RemoveLabRequestCommandHandler : IRequestHandler<RemoveLabRequestCommand, Result>
     {
@@ -17,7 +17,7 @@ namespace Application.Features.LabOrder.RemoveLabRequest
         }
         public async Task<Result> Handle(RemoveLabRequestCommand request, CancellationToken cancellationToken)
         {
-            var labOrder = await _labOrderRepository.GetLabOrderWithLabRequestAsync(request.LabOrderId);
+            var labOrder = await _labOrderRepository.GetLabOrderWithLabRequestForUpdateAsync(request.LabOrderId);
 
             if (labOrder is null)
                 return LaboratoryOrderErrors.LabOrder.NotFound;

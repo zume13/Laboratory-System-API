@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.LabOrder.RemoveLabRequest
+namespace Application.Features.LabOrder.Commands.RemoveLabRequest
 {
     public record RemoveLabRequestCommand(Guid LabOrderId, Guid TestCategory) : IRequest<Result>;   
 }

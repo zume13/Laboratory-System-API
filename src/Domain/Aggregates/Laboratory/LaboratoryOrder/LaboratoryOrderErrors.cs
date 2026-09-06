@@ -33,6 +33,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             public static Error InvalidFileType => Error.Conflict("Result.InvalidFileType", "The file type is not allowed. Only PDF files are accepted.");
             public static Error InvalidFilePath => Error.Conflict("Result.InvalidFilePath", "The file path is invalid or does not exist.");
             public static Error FileNotFound(string FileName) => Error.Conflict("Result.FileNotFound", $"The {FileName} was not found.");
+            public static Error ResultAlreadyUploaded => Error.Conflict("Result.AlreadyUploaded", "The laboratory request already has a result");
         }
     }
 }

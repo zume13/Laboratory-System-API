@@ -2,6 +2,7 @@
 using Domain.ValueObjects;
 using LMS.SharedKernel.Primitives;
 using SharedKernel.Shared;
+using static Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryOrderErrors;
 
 namespace Domain.Aggregates.Laboratory.LaboratoryOrder 
 { 
@@ -64,7 +65,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             return Result.Success();
         }
 
-        internal Result Release() 
+        internal Result ReleaseResult() 
         { 
             if (Status != RequestStatus.Pending) 
                 return LaboratoryOrderErrors.Request.InvalidStatus; 
@@ -72,7 +73,7 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             if (_result is null)
                 return LaboratoryOrderErrors.Request.NotFound(Id);
             
-            Status = RequestStatus.Released; 
+            _result.Release();
 
             return Result.Success(); 
         } 
@@ -104,6 +105,17 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             Status = RequestStatus.Voided; 
 
             return Result.Success(); 
-        } 
+        }
+
+        internal Result CanUploadResult()
+        {
+            if (Status != RequestStatus.Pending)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            if (_result is not null)
+                return LaboratoryOrderErrors.Request.RequestAlreadyExitsts;
+
+            return Result.Success();
+        }
     } 
 }

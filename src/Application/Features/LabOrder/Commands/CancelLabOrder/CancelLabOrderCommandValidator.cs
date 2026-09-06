@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.LabOrder.CancelLabOrder
+namespace Application.Features.LabOrder.Commands.CancelLabOrder
 {
     public class CancelLabOrderCommandValidator : AbstractValidator<CancelLabOrderCommand>  
     {

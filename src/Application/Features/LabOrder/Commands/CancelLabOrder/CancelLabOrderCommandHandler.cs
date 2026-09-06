@@ -4,7 +4,7 @@ using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.LabOrder.CancelLabOrder
+namespace Application.Features.LabOrder.Commands.CancelLabOrder
 {
     public class CancelLabOrderCommandHandler : IRequestHandler<CancelLabOrderCommand, Result>
     {
@@ -18,7 +18,7 @@ namespace Application.Features.LabOrder.CancelLabOrder
         }
         public async Task<Result> Handle(CancelLabOrderCommand request, CancellationToken cancellationToken)
         {
-            var labOrder = await _labOrderRepository.GetLabOrderWithLabRequestAsync(request.LabOrderId);
+            var labOrder = await _labOrderRepository.GetLabOrderWithLabRequestForUpdateAsync(request.LabOrderId);
 
             if(labOrder is null)
                 return LaboratoryOrderErrors.LabOrder.NotFound; 

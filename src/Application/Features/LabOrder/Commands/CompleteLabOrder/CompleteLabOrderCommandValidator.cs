@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.LabOrder.CompleteLabOrder
+namespace Application.Features.LabOrder.Commands.CompleteLabOrder
 {
     internal class CompleteLabOrderCommandValidator : AbstractValidator<CompleteLabOrderCommand>
     {

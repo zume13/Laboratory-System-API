@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.LabOrder.RemoveLabRequest
+namespace Application.Features.LabOrder.Commands.RemoveLabRequest
 {
     internal class RemoveLabRequestCommandValidator : AbstractValidator<RemoveLabRequestCommand>
     {

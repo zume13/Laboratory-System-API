@@ -1,8 +1,8 @@
-﻿using Application.Features.LabOrder.AddLabRequest;
-using Application.Features.LabOrder.CancelLabOrder;
-using Application.Features.LabOrder.CompleteLabOrder;
-using Application.Features.LabOrder.CreateLabOrder;
-using Application.Features.LabOrder.RemoveLabRequest;
+﻿using Application.Features.LabOrder.Commands.AddLabRequest;
+using Application.Features.LabOrder.Commands.CancelLabOrder;
+using Application.Features.LabOrder.Commands.CompleteLabOrder;
+using Application.Features.LabOrder.Commands.CreateLabOrder;
+using Application.Features.LabOrder.Commands.RemoveLabRequest;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

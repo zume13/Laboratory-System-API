@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.Laboratory.LaboratoryOrder.Enums;
+using Domain.ValueObjects;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
 
@@ -73,12 +74,15 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             if (request is null)
                 return LaboratoryOrderErrors.Request.NotFound(testCategoryId);
 
-            request.Void();
+            var voidResult = request.Void();
+
+            if (voidResult.IsFailure)
+                return voidResult.Error;
 
             return Result.Success();
         }
 
-        /// <summary> /// Completes the order only when all active requests /// have been completed. /// </summary> 
+        /// <summary> /// Completes the order only when all active requests have been completed. /// </summary> 
         public Result Complete() 
         { 
             if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled) 
@@ -94,20 +98,89 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             CompletedAt = DateTime.UtcNow; 
 
             return Result.Success(); 
-        } 
-        public Result Cancel() 
-        { 
-            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled) 
-                return LaboratoryOrderErrors.Request.InvalidStatus; 
-            
-            foreach (var request in _requests .Where(r => r.Status != RequestStatus.Released && r.Status != RequestStatus.Voided)) 
-            { 
-                request.Void(); 
-            } 
-            
+        }
+        public Result Cancel()
+        {
+            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            foreach (var request in _requests
+                .Where(r =>
+                    r.Status != RequestStatus.Completed &&
+                    r.Status != RequestStatus.Voided))
+            {
+                var result = request.Void();
+
+                if (result.IsFailure)
+                    return result.Error;
+            }
+
             Status = LabOrderStatus.Cancelled;
-            
-            return Result.Success(); 
-        } 
+
+            return Result.Success();
+        }
+
+        public ResultT<LaboratoryResult> UploadResult(
+            Guid requestId,
+            Guid uploadedByStaffId,
+            PdfPath pdfPath,
+            string sampleId)
+        {
+            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            var request = _requests.FirstOrDefault(x => x.Id == requestId);
+
+            if (request is null)
+                return LaboratoryOrderErrors.Request.NotFound(requestId);
+
+            return request.UploadResult(
+                uploadedByStaffId,
+                pdfPath,
+                sampleId);
+        }
+        public Result ReleaseRequest(Guid requestId)
+        {
+            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            var request = _requests.FirstOrDefault(x => x.Id == requestId);
+
+            if (request is null)
+                return LaboratoryOrderErrors.Request.NotFound(requestId);
+
+            return request.ReleaseResult();
+        }
+
+        public Result CompleteRequest(Guid requestId)
+        {
+            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            var request = _requests.FirstOrDefault(x => x.Id == requestId);
+
+            if (request is null)
+                return LaboratoryOrderErrors.Request.NotFound(requestId);
+
+            var result = request.Complete();
+
+            if (result.IsFailure)
+                return result.Error;
+
+            return Result.Success();
+        }
+
+        public Result CanUploadResult(Guid requestId)
+        {
+            if (Status is LabOrderStatus.Completed or LabOrderStatus.Cancelled)
+                return LaboratoryOrderErrors.Request.InvalidStatus;
+
+            var request = _requests.FirstOrDefault(x => x.Id == requestId);
+
+            if (request is null)
+                return LaboratoryOrderErrors.Request.NotFound(requestId);
+
+            return request.CanUploadResult();
+        }
     } 
 }
