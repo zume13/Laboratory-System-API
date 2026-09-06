@@ -26,7 +26,6 @@
     <Folder Include="Features\RefreshToken\" />
     <Folder Include="Features\SystemConfig\" />
     <Folder Include="Features\StorageStatus\" />
-    <Folder Include="Features\PatientProfile\" />
     <Folder Include="Features\SmsGateway\" />
     <Folder Include="Features\Notification\" />
   </ItemGroup>
