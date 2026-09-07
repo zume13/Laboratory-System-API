@@ -5,8 +5,8 @@ namespace Application.Abstractions.FileStorage
     public interface IFileStorageService
     {
         Task<ResultT<string>> StoreFileAsync(string fileName, Stream fileStream, string subFolder, CancellationToken cancellationToken = default);
-        Task<ResultT<Stream>> GetFileAsync(string relativePath, CancellationToken cancellationToken = default);
-        Task<ResultT<bool>> DeleteFileAsync(string relativePath, CancellationToken cancellationToken = default);
+        ResultT<Stream> GetFile(string relativePath);
+        ResultT<bool> DeleteFile(string relativePath);
         bool Exists(string relativePath);
     }
 }

@@ -41,7 +41,7 @@ namespace Application.Features.LabOrder.Commands.UploadLabResult
 
             if (pdfPath.IsFailure)
             {
-                var deleteFile = await _service.DeleteFileAsync(pdfPath.value.value!, cancellationToken);
+                var deleteFile = _service.DeleteFile(pdfPath.value.value);
 
                 if(deleteFile.IsFailure)
                     return deleteFile.Error;
@@ -53,7 +53,7 @@ namespace Application.Features.LabOrder.Commands.UploadLabResult
 
             if (uploadResult.IsFailure) 
             {
-                var deleteFile = await _service.DeleteFileAsync(pdfPath.value.value!, cancellationToken);
+                var deleteFile = _service.DeleteFile(pdfPath.value.value);
 
                 if (deleteFile.IsFailure)
                     return deleteFile.Error;
@@ -65,7 +65,7 @@ namespace Application.Features.LabOrder.Commands.UploadLabResult
 
             if (saveResult.IsFailure)
             {
-                var deleteFile = await _service.DeleteFileAsync(pdfPath.value.value!, cancellationToken);
+                var deleteFile = _service.DeleteFile(pdfPath.value.value);
 
                 if (deleteFile.IsFailure)
                     return deleteFile.Error;

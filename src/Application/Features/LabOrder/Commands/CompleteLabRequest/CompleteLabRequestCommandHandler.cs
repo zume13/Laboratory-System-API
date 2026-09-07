@@ -20,6 +20,7 @@ namespace Application.Features.LabOrder.Commands.CompleteLabRequest
         public async Task<Result> Handle(CompleteLabRequestCommand request, CancellationToken cancellationToken)
         {
             var labOrder = await _labOrderRepository.GetLabOrderWithLabRequestForUpdateAsync(request.LabOrderId, cancellationToken);
+
             if (labOrder is null)
                 return LaboratoryOrderErrors.LabOrder.NotFound;
 
@@ -28,6 +29,7 @@ namespace Application.Features.LabOrder.Commands.CompleteLabRequest
                 return result.Error;
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             if (saveResult.IsFailure)
                 return saveResult.Error;
 

@@ -1,21 +1,22 @@
 ﻿using Application.Features.LabOrder.Commands.AddLabRequest;
 using Application.Features.LabOrder.Commands.CancelLabOrder;
 using Application.Features.LabOrder.Commands.CompleteLabOrder;
+using Application.Features.LabOrder.Commands.CompleteLabRequest;
 using Application.Features.LabOrder.Commands.CreateLabOrder;
+using Application.Features.LabOrder.Commands.ReleaseLabRequest;
 using Application.Features.LabOrder.Commands.RemoveLabRequest;
+using Application.Features.LabOrder.Commands.RemoveLabResult;
 using Application.Features.LabOrder.Commands.UploadLaboratoryResult;
 using Application.Features.LabOrder.Queries.GetAllLabOrdersByPatientId;
 using Application.Features.LabOrder.Queries.GetLabOrderByPatientId;
-using Application.Features.LabOrder.Commands.ReleaseLabRequest;
-using Application.Features.LabOrder.Commands.CompleteLabRequest;
+using Application.Features.LabOrder.Queries.GetLabResultFile;
 using Laboratory_Management_API.Models;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
+using System.Security.Claims;
 
 namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
 {
@@ -161,7 +162,10 @@ namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
         public async Task<IActionResult> ReleaseRequest([FromBody] ReleaseLabRequestCommand command)
         {
             var result = await _mediator.Send(command);
-            if (result.IsFailure) return BadRequest(result.Error);
+
+            if (result.IsFailure) 
+                return BadRequest(result.Error);
+
             return Ok();
         }
 
@@ -171,8 +175,36 @@ namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
         public async Task<IActionResult> CompleteRequest([FromBody] CompleteLabRequestCommand command)
         {
             var result = await _mediator.Send(command);
-            if (result.IsFailure) return BadRequest(result.Error);
+
+            if (result.IsFailure) 
+                return BadRequest(result.Error);
+
             return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.patients)]
+        [HttpGet("result-file")] 
+        public async Task<IActionResult> GetLabResultFile([FromQuery] string relativePath, CancellationToken cancellationToken) 
+        { 
+            var result = await _mediator.Send(new GetLabResultFileQuery(relativePath), cancellationToken); 
+
+            if (result.IsFailure) 
+                return BadRequest(result.Error); 
+
+            return Ok(File(result.value.stream, result.value.contentType, result.value.fileName));
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpDelete("{labOrderId}/requests/{requestId}/result")] 
+        public async Task<IActionResult> RemoveLabResult(Guid labOrderId, Guid requestId, CancellationToken cancellationToken) 
+        { 
+            var result = await _mediator.Send(new RemoveLabResultCommand(labOrderId, requestId), cancellationToken); 
+            if (result.IsFailure) 
+                return BadRequest(result.Error); 
+            
+            return NoContent(); 
         }
     }
 }

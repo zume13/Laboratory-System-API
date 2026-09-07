@@ -48,9 +48,26 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
 
             var result = LaboratoryResult.Create(Id, uploadedByStaffId, pdfPath, sampleId); 
 
-            if (result.IsFailure) return result.Error; _result = result.value; 
+            if (result.IsFailure) 
+                return result.Error; 
+            
+            _result = result.value; 
+
             return result.value;
         } 
+
+        internal Result RemoveResult()
+        {
+            if(Status == RequestStatus.Voided)
+                return LaboratoryOrderErrors.LaboratoryResult.ResultAlreadyVoided;
+
+            if (Status == RequestStatus.Completed)
+                Status = RequestStatus.Pending;
+
+            _result = null;
+
+            return Result.Success();
+        }
 
         public Result AttachPatient(Guid patientId)
         {

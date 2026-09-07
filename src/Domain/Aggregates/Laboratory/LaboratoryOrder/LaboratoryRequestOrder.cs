@@ -182,5 +182,20 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
 
             return request.CanUploadResult();
         }
+
+        public Result RemoveResult(Guid requestId)
+        {
+            var request = _requests.FirstOrDefault(r => r.Id == requestId);
+
+            if (request is null)
+                return LaboratoryOrderErrors.LaboratoryResult.NotFound(requestId);
+
+            var result = request.RemoveResult();
+
+            if (result.IsFailure)
+                return result.Error;
+
+            return Result.Success();
+        }
     } 
 }

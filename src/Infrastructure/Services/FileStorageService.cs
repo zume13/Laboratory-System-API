@@ -40,7 +40,7 @@ namespace Infrastructure.Services
             return Path.Combine(subFolder, storedFileName).Replace('\\', '/');
         }
 
-        public async Task<ResultT<Stream>> GetFileAsync(string relativePath, CancellationToken cancellationToken = default)
+        public ResultT<Stream> GetFile(string relativePath)
         {
             var fullPath = ResolveSafePath(relativePath);   
 
@@ -55,19 +55,23 @@ namespace Infrastructure.Services
             return ResultT<Stream>.Success(stream);
         }
 
-        public async Task<ResultT<bool>> DeleteFileAsync(string relativePath, CancellationToken cancellationToken = default)
-        {
-            var fullPath = ResolveSafePath(relativePath);
+        public ResultT<bool> DeleteFile(string relativePath) 
+        { 
+            var fullPath = ResolveSafePath(relativePath); 
 
-            if (fullPath.IsFailure)
-                return fullPath.Error;
+            if (fullPath.IsFailure) 
+                return fullPath.Error; 
+            
+            try 
+            { 
+                File.Delete(fullPath.value); 
 
-            if (!File.Exists(fullPath.value))
-                return LaboratoryOrderErrors.LaboratoryResult.FileNotFound(relativePath);
-
-            File.Delete(fullPath.value);
-
-            return ResultT<bool>.Success(true); 
+                return ResultT<bool>.Success(true); 
+            } 
+            catch (FileNotFoundException) 
+            { 
+                return LaboratoryOrderErrors.LaboratoryResult.FileNotFound(relativePath); 
+            } 
         }
 
         public bool Exists(string relativePath)

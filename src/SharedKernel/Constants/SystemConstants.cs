@@ -26,5 +26,9 @@ namespace SharedKernel.Constants
             public const string unknown = "unknown";
         }
 
+        public static class SupportedFileExts 
+        {
+            public const string pdf = "application/pdf";
+        }
     }
 }
