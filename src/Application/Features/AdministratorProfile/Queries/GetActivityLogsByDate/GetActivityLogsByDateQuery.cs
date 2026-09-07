@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Dto;
+using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.AdministratorProfile.Queries.GetActivityLogsByDate
 {
-    internal class GetActivityLogsByDateQuery
-    {
-    }
+    public record GetActivityLogsByDateQuery(DateTime date) : IRequest<ResultT<List<ActivityLogDto>>>;
 }

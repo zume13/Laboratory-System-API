@@ -3,6 +3,14 @@ using Application.Features.LabOrder.Commands.CancelLabOrder;
 using Application.Features.LabOrder.Commands.CompleteLabOrder;
 using Application.Features.LabOrder.Commands.CreateLabOrder;
 using Application.Features.LabOrder.Commands.RemoveLabRequest;
+using Application.Features.LabOrder.Commands.UploadLaboratoryResult;
+using Application.Features.LabOrder.Queries.GetAllLabOrdersByPatientId;
+using Application.Features.LabOrder.Queries.GetLabOrderByPatientId;
+using Application.Features.LabOrder.Commands.ReleaseLabRequest;
+using Application.Features.LabOrder.Commands.CompleteLabRequest;
+using Laboratory_Management_API.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -92,6 +100,79 @@ namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
                 return BadRequest(result.Error);
 
             return NoContent();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("all-lab-orders-by/{patientId}")]
+        public async Task<IActionResult> GetAllByPatient(Guid patientId)
+        {
+            var result = await _mediator.Send(new GetAllLabOrdersByPatientIdQuery(patientId));
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("get/{labOrderId}")]
+        public async Task<IActionResult> GetById(Guid labOrderId)
+        {
+            var result = await _mediator.Send(new GetPatientLabOrderQuery(labOrderId));
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("{labOrderId}/requests/{requestId}/result")]
+        public async Task<IActionResult> UploadResult(
+            Guid labOrderId,
+            Guid requestId,
+            [FromForm] UploadLabResultForm form)
+        {
+            var uploadedByStaffId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var command = new UploadLabResultCommand(
+                labOrderId,
+                requestId,
+                uploadedByStaffId,
+                form.File.OpenReadStream(),
+                form.File.FileName,
+                form.SubFolder,
+                form.SampleId);
+
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("release-request")]
+        public async Task<IActionResult> ReleaseRequest([FromBody] ReleaseLabRequestCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("complete-request")]
+        public async Task<IActionResult> CompleteRequest([FromBody] CompleteLabRequestCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok();
         }
     }
 }

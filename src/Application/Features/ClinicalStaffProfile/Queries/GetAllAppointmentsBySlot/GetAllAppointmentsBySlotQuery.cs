@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Dto;
+using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.ClinicalStaffProfile.Queries.GetAllAppointmentsBySlot
 {
-    internal class GetAllAppointmentsBySlotQuery
-    {
-    }
+    public record GetAllAppointmentsBySlotQuery(Guid appointmentSlotId) : IRequest<ResultT<List<AppointmentDto>>>;
 }
