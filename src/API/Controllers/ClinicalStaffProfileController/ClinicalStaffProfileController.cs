@@ -2,6 +2,7 @@
 using Application.Features.ClinicalStaffProfile.Commands.ChangeStaffRole;
 using Application.Features.ClinicalStaffProfile.Commands.DeactivateStaffProfile;
 using Application.Features.ClinicalStaffProfile.Commands.ReactivateStaffProfile;
+using Application.Features.ClinicalStaffProfile.Queries.GetAllAppointmentsBySlot;
 using Application.Features.ClinicalStaffProfile.Queries.GetActiveClinicalStaff;
 using Application.Features.ClinicalStaffProfile.Queries.GetClinicalStaffByRole;
 using Application.Features.ClinicalStaffProfile.Queries.GetStaffProfile;
@@ -81,6 +82,16 @@ namespace Laboratory_Management_API.Controllers.ClinicalStaffProfileController
         public async Task<IActionResult> GetActive()
         {
             var result = await _mediator.Send(new GetActiveClinicalStaffQuery());
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("appointments/by-slot/{appointmentSlotId}")]
+        public async Task<IActionResult> GetAppointmentsBySlot(Guid appointmentSlotId)
+        {
+            var result = await _mediator.Send(new GetAllAppointmentsBySlotQuery(appointmentSlotId));
             if (result.IsFailure) return BadRequest(result.Error);
             return Ok(result.value);
         }

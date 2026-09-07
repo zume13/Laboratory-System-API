@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Features.LabOrder.Dto;
+using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.PatientProfile.Queries.GetAllLaboratoryRequestById
 {
-    internal class GetAllLaboratoryRequestByIdQuery
-    {
-    }
+    public record GetAllLaboratoryRequestByIdQuery(Guid patientId) : IRequest<ResultT<List<LabOrderDto>>>;
 }

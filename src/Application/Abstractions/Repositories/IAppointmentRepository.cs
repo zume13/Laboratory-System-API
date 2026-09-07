@@ -12,5 +12,7 @@ namespace Application.Abstractions.Repositories
         Task<List<Appointment>> GetPastDueUnresolvedAsync(DateTime asOf, CancellationToken cancellationToken = default);
         Task<List<Appointment>> GetWithPendingRemindersDueAsync(DateTime asOf, CancellationToken cancellationToken = default);
         Task<Appointment?> GetAppointmentWithAppointmentTestAsync(Guid appointmentId, CancellationToken cancellationToken = default);
+
+        Task<List<Appointment>> GetAllByAppointmentSlotIdAsync(Guid appointmentSlotId, CancellationToken cancellationToken = default);
     }
 }

@@ -59,5 +59,11 @@ namespace Infrastructure.Persistence.Repositories
                     a => a.Id == appointmentId,
                     cancellationToken);
         }
+        public async Task<List<Appointment>> GetAllByAppointmentSlotIdAsync(Guid appointmentSlotId, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Appointments
+                .Where(a => a.AppointmentSlotId == appointmentSlotId)
+                .ToListAsync(cancellationToken);
+        }
     }
 }
