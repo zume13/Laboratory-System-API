@@ -26,13 +26,14 @@ namespace Infrastructure.Persistence.EntityConfiguration
                 .IsRequired()
                 .HasConversion<string>();
 
-            builder.HasOne<LaboratoryResult>("_result")
+            builder.HasOne(x => x.labResult)
                 .WithOne()
                 .HasForeignKey<LaboratoryResult>(x => x.LaboratoryRequestId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation("_result")
+            builder.Navigation(x => x.labResult)
+                .HasField("_result")
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

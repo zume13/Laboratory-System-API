@@ -17,7 +17,7 @@ namespace Application.Features.TestCategories.Queries.GetActiveTestCategories
            GetActiveTestCategoriesQuery request,
            CancellationToken cancellationToken)
         {
-            var categories = await _testCategoryRepository.GetAllAsync(cancellationToken);
+            var categories = await _testCategoryRepository.GetActiveAsync(cancellationToken);
 
             var dtos = categories
                 .Select(c => new PublicTestCategoryDto(c.Id, c.Name.value, c.Price.value))

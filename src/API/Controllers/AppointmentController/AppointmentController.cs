@@ -7,6 +7,7 @@ using Application.Features.Appointments.Commands.CreateWalkInAppointment;
 using Application.Features.Appointments.Commands.MarkAppointmentNoShow;
 using Application.Features.Appointments.Commands.RemoveAppointmentTest;
 using Application.Features.Appointments.Commands.RescheduleAppointment;
+using Application.Features.Appointments.Queries.GetAppointmentWithTests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -143,6 +144,16 @@ namespace Laboratory_Management_API.Controllers.AppointmentController
                 return BadRequest(result.Error);
 
             return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("get-tests/{appointmentId}")]
+        public async Task<IActionResult> GetById(Guid appointmentId)
+        {
+            var result = await _mediator.Send(new GetAppointmentWithTestsQuery(appointmentId));
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
         }
     }
 }
