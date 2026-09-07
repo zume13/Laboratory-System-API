@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Auth;
 using Application.Abstractions.Base;
+using Application.Abstractions.FileStorage;
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.Identity.UserProfile;
 using Infrastructure.Persistence.Database;
@@ -43,7 +44,7 @@ namespace Infrastructure
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
+            services.AddScoped<IFileStorageService, FileStorageService>();
             return services;
         }
     }
