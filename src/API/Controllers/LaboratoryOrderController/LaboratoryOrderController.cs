@@ -6,6 +6,8 @@ using Application.Features.LabOrder.Commands.RemoveLabRequest;
 using Application.Features.LabOrder.Commands.UploadLaboratoryResult;
 using Application.Features.LabOrder.Queries.GetAllLabOrdersByPatientId;
 using Application.Features.LabOrder.Queries.GetLabOrderByPatientId;
+using Application.Features.LabOrder.Commands.ReleaseLabRequest;
+using Application.Features.LabOrder.Commands.CompleteLabRequest;
 using Laboratory_Management_API.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
@@ -151,6 +153,26 @@ namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
                 return BadRequest(result.Error);
 
             return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("release-request")]
+        public async Task<IActionResult> ReleaseRequest([FromBody] ReleaseLabRequestCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok();
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpPost("complete-request")]
+        public async Task<IActionResult> CompleteRequest([FromBody] CompleteLabRequestCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok();
         }
     }
 }
