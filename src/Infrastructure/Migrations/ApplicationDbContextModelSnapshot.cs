@@ -679,7 +679,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryResult", b =>
                 {
                     b.HasOne("Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryRequest", null)
-                        .WithOne("_result")
+                        .WithOne("labResult")
                         .HasForeignKey("Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryResult", "LaboratoryRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -761,7 +761,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryRequest", b =>
                 {
-                    b.Navigation("_result");
+                    b.Navigation("labResult");
                 });
 
             modelBuilder.Entity("Domain.Aggregates.Laboratory.LaboratoryOrder.LaboratoryRequestOrder", b =>

@@ -28,7 +28,7 @@ namespace Infrastructure.Services
 
             Directory.CreateDirectory(folder);
 
-            var storedFileName = $"{Guid.NewGuid()}{extension}";
+            var storedFileName = $"{Guid.NewGuid()}.{extension}";
 
             var fullPath = Path.Combine(folder, storedFileName);
 

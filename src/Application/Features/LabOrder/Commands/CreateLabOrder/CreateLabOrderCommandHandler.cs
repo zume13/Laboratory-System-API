@@ -27,17 +27,17 @@ namespace Application.Features.LabOrder.Commands.CreateLabOrder
 
             var labOrder = AppointmentFulfillmentService.Fulfill(appointment);
 
-            if(labOrder.IsFailure)
+            if (labOrder.IsFailure)
                 return labOrder.Error;
 
             await _labOrderRepository.AddAsync(labOrder.value, cancellationToken);
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            if(saveResult.IsFailure)
+            if (saveResult.IsFailure)
                 return saveResult.Error;
 
-            return ResultT<Guid>.Success(appointment.Id);
+            return ResultT<Guid>.Success(labOrder.value.Id);
         }
     }
 }
