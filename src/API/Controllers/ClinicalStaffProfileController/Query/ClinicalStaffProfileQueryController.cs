@@ -17,11 +17,11 @@ namespace Laboratory_Management_API.Controllers.ClinicalStaffProfileController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClinicalStaffProfileController : ControllerBase
+    public class ClinicalStaffProfileQueryController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ClinicalStaffProfileController(IMediator mediator)
+        public ClinicalStaffProfileQueryController(IMediator mediator)
         {
             _mediator = mediator;
         }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Application.Abstractions.Base;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using SharedKernel.Constants;
@@ -14,6 +16,12 @@ namespace Laboratory_Management_API
             this IServiceCollection services,
             IConfiguration configuration)
         {
+
+            services.Configure<AdminSeedOptions>(
+                configuration.GetSection("AdminSeed"));
+
+            services.AddScoped<AdminSeederService>();
+
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen(c =>

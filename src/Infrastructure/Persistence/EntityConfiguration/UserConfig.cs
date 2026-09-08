@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.Identity.UserProfile;
+﻿using Domain.Aggregates.Identity.AdministratorProfile;
+using Domain.Aggregates.Identity.UserProfile;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -21,7 +21,7 @@ namespace Application.Features.AdministratorProfile.Queries.GetAdministratorProf
             if (profile is null)
                 return AdministratorStaffProfileErrors.NotFound(request.userId);
 
-            return new AdministratorProfileDto(profile.Id, profile.UserId, profile.Permissions);
+            return new AdministratorProfileDto(profile.Id, profile.UserId);
         }
     }
 }

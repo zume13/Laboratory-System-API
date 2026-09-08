@@ -8,20 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 
-namespace Laboratory_Management_API.Controllers.UserController
+namespace Laboratory_Management_API.Controllers.UserController.Command
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserCommandController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public UserController(IMediator mediator)
+        public UserCommandController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [AllowAnonymous]
-        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.adminOnly)]
         [HttpPost("auth/register-employee")]
         public async Task<IActionResult> RegisterEmployee(RegisterEmployeeDto registerDto)
         {

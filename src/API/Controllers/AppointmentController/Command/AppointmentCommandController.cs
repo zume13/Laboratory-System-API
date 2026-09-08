@@ -13,15 +13,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 
-namespace Laboratory_Management_API.Controllers.AppointmentController
+namespace Laboratory_Management_API.Controllers.AppointmentController.Command
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AppointmentController : ControllerBase
+    public class AppointmentCommandController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AppointmentController(IMediator mediator)
+        public AppointmentCommandController(IMediator mediator)
         {
             _mediator = mediator;
         }

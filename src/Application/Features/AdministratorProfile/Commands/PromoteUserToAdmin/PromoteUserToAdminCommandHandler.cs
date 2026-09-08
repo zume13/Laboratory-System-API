@@ -39,7 +39,7 @@ namespace Application.Features.AdministratorProfile.Commands.PromoteUserToAdmin
             if (assignResult.IsFailure)
                 return assignResult.Error;
 
-            var profileResult = adminProfile.Create(request.userId, request.permissions);
+            var profileResult = adminProfile.Create(request.userId);
             if (profileResult.IsFailure)
                 return profileResult.Error;
 

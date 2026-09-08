@@ -5,6 +5,7 @@ using Application;
 using Laboratory_Management_API.Extensions;
 using Laboratory_Management_API;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,11 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
+
+    var seeder = scope.ServiceProvider
+        .GetRequiredService<AdminSeederService>();
+
+    await seeder.SeedAsync();
 }
 
 // Configure the HTTP request pipeline.

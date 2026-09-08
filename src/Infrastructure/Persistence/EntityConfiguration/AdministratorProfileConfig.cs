@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.Identity.AdministratorProfile;
+using Domain.Aggregates.Identity.UserProfile;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,7 +15,10 @@ namespace Infrastructure.Persistence.EntityConfiguration
             builder.Property(x => x.UserId).IsRequired();
             builder.HasIndex(x => x.UserId).IsUnique();
 
-            builder.Property(x => x.Permissions).HasMaxLength(500);
+            builder.HasOne<User>()
+                   .WithOne()
+                   .HasForeignKey<AdministratorProfile>(x => x.UserId);
+
         }
     }
 }

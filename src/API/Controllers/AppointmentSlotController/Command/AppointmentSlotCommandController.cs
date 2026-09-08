@@ -13,15 +13,15 @@ using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 using System.Security.Claims;
 
-namespace Laboratory_Management_API.Controllers.AppointmentSlotController
+namespace Laboratory_Management_API.Controllers.AppointmentSlotController.Command
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentSlotController : ControllerBase
+    public class AppointmentSlotCommandController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AppointmentSlotController(IMediator mediator)
+        public AppointmentSlotCommandController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -73,46 +73,6 @@ namespace Laboratory_Management_API.Controllers.AppointmentSlotController
                 return BadRequest(result.Error);
 
             return Ok();
-        }
-
-        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
-        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpGet("get-appointmentslot/{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var result = await _mediator.Send(new GetAppointmentSlotByIdQuery(id));
-            if (result.IsFailure) return BadRequest(result.Error);
-            return Ok(result.value);
-        }
-
-        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
-        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpGet("get-appointmentslot-by-date/{date}")]
-        public async Task<IActionResult> GetByDate(DateTime date)
-        {
-            var result = await _mediator.Send(new GetAppointmentSlotsByDateQuery(date));
-            if (result.IsFailure) return BadRequest(result.Error);
-            return Ok(result.value);
-        }
-
-        [EnableRateLimiting(SystemConstants.RateLimits.anonymous)]
-        [AllowAnonymous]
-        [HttpGet("get-appointmentslot-available")]
-        public async Task<IActionResult> GetAvailable([FromQuery] DateTime date, [FromQuery] Guid testCategoryId)
-        {
-            var result = await _mediator.Send(new GetAvailableAppointmentSlotsQuery(date, testCategoryId));
-            if (result.IsFailure) return BadRequest(result.Error);
-            return Ok(result.value);
-        }
-
-        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
-        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
-        [HttpGet("get-appointmentslot-daterange")]
-        public async Task<IActionResult> GetByDateRange([FromQuery] DateTime from, [FromQuery] DateTime to)
-        {
-            var result = await _mediator.Send(new GetAppointmentSlotsByDateRangeQuery(from, to));
-            if (result.IsFailure) return BadRequest(result.Error);
-            return Ok(result.value);
         }
     }
 }
