@@ -1,8 +1,6 @@
 ﻿using Application.Features.LabOrder.Commands.CancelLabOrder;
 using Application.Features.LabOrder.Commands.CompleteLabOrder;
 using Application.Features.LabOrder.Commands.CreateLabOrder;
-using Application.Features.LabOrder.Queries.GetAllLabOrdersByPatientId;
-using Application.Features.LabOrder.Queries.GetLabOrderByPatientId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

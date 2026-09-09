@@ -1,6 +1,4 @@
 ﻿using Application.Dto;
-using Application.Features.SlotCapacity.Commands.Create;
-using Application.Features.SlotCapacity.Commands.Update;
 using Application.Features.SlotCapacity.Queries.GetSlotCapacityConfigByTestCategoryId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
