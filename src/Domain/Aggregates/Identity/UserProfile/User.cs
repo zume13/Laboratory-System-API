@@ -24,6 +24,7 @@ namespace Domain.Aggregates.Identity.UserProfile
             PhoneNumber = phone;
             HashedPassword = hashedPassword;
             Role = role;
+            VerificationToken = Guid.NewGuid().ToString();
         }
 
         public Name FirstName { get; private set; }
@@ -39,6 +40,7 @@ namespace Domain.Aggregates.Identity.UserProfile
         public UserRole Role { get; private set; } 
 
         public DateTime? LastLoginAt { get; private set; }
+        public string? VerificationToken { get; private set; } 
 
         public static ResultT<User> Create(
             Name firstName,

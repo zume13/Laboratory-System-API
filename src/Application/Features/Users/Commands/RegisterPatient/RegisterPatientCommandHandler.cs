@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.RegisterPatient
+namespace Application.Features.Users.Commands.RegisterPatient
 {
     public class RegisterPatientCommandHandler : IRequestHandler<RegisterPatientCommand, Result>
     {

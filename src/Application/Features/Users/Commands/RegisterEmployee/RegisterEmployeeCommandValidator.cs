@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Users.RegisterEmployee
+namespace Application.Features.Users.Commands.RegisterEmployee
 {
     public class RegisterEmployeeCommandValidator : AbstractValidator<RegisterEmployeeCommand>
     {

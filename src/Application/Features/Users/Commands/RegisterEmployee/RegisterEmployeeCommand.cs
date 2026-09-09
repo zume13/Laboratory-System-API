@@ -2,7 +2,7 @@
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.RegisterEmployee
+namespace Application.Features.Users.Commands.RegisterEmployee
 {
     public record RegisterEmployeeCommand(
      string firstName,

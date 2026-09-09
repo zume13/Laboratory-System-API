@@ -1,8 +1,8 @@
 ﻿using SharedKernel.Shared;
 
-namespace Application.Features.Users.RegisterPatient
+namespace Application.Features.Users.Commands.RegisterEmployee
 {
-    public static class RegisterPatientErrors
+    public static class RegisterEmployeeErrors
     {
         public static Error UserWithEmailAlreadyExists => Error.Conflict("UserWithEmail.AlreadyExists", "User with the provided email already exists.");
     }
