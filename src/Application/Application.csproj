@@ -24,8 +24,6 @@
     <Folder Include="Features\ClinicalStaffProfile\" />
     <Folder Include="Features\LabOrder\Commands\UploadLabResult\" />
     <Folder Include="Features\RefreshToken\" />
-    <Folder Include="Features\SystemConfig\" />
-    <Folder Include="Features\StorageStatus\" />
     <Folder Include="Features\SmsGateway\" />
     <Folder Include="Features\Notification\" />
   </ItemGroup>
