@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
+using Application.Dto;
 using Domain.Aggregates.Appointment;
 using Domain.Aggregates.Appointment.Enums;
 using Domain.Aggregates.Communications.Enums;
@@ -64,6 +65,24 @@ namespace Infrastructure.Persistence.Repositories
             return await _dbContext.Appointments
                 .Where(a => a.AppointmentSlotId == appointmentSlotId)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<AppointmentScheduleSummaryDto> GetScheduleSummaryByDateAsync(DateTime date, CancellationToken cancellationToken = default)
+        {
+            var statuses = await (
+                from appointment in _dbContext.Appointments
+                join slot in _dbContext.AppointmentSlots on appointment.AppointmentSlotId equals slot.Id
+                where slot.Date == date.Date
+                select appointment.Status)
+                .ToListAsync(cancellationToken);
+
+            return new AppointmentScheduleSummaryDto(
+                date.Date,
+                statuses.Count,
+                statuses.Count(s => s == AppointmentStatus.Booked),
+                statuses.Count(s => s == AppointmentStatus.Cancelled),
+                statuses.Count(s => s == AppointmentStatus.Completed),
+                statuses.Count(s => s == AppointmentStatus.NoShow));
         }
     }
 }
