@@ -1,8 +1,5 @@
 ﻿using Application.Features.PatientProfile.Commands.AcceptPatientConsent;
 using Application.Features.PatientProfile.Commands.LinkPatientPhysicalRecord;
-using Application.Features.PatientProfile.Queries.GetMyPatientProfile;
-using Application.Features.PatientProfile.Queries.GetPatientProfileByPhysicalId;
-using Application.Features.PatientProfile.Queries.GetAllLaboratoryRequestById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

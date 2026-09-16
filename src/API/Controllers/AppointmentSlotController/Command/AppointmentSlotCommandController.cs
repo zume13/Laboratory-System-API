@@ -2,10 +2,6 @@
 using Application.Features.AppointmentSlots.Commands.Create;
 using Application.Features.AppointmentSlots.Commands.Delete;
 using Application.Features.AppointmentSlots.Commands.Update;
-using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotById;
-using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotsByDate;
-using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotsByDateRange;
-using Application.Features.AppointmentSlots.Queries.GetAvailableAppointmentSlots;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

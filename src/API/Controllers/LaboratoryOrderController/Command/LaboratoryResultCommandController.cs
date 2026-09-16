@@ -1,6 +1,5 @@
 ﻿using Application.Features.LabOrder.Commands.RemoveLabResult;
 using Application.Features.LabOrder.Commands.UploadLaboratoryResult;
-using Application.Features.LabOrder.Queries.GetLabResultFile;
 using Laboratory_Management_API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
