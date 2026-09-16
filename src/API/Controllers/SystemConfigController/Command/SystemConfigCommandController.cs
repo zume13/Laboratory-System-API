@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 
-namespace Laboratory_Management_API.Controllers.SystemConfigCommandController
+namespace Laboratory_Management_API.Controllers.SystemConfigController
 {
     [Route("api/[controller]")]
     [ApiController]

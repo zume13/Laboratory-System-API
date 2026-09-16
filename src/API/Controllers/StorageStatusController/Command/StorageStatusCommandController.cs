@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 
-namespace Laboratory_Management_API.Controllers.StorageStatusCommandController
+namespace Laboratory_Management_API.Controllers.StorageStatusController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -38,5 +38,6 @@ namespace Laboratory_Management_API.Controllers.StorageStatusCommandController
             if (result.IsFailure) return BadRequest(result.Error);
             return NoContent();
         }
+
     }
 }

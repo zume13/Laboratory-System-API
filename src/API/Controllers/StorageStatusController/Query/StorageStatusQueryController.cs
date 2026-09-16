@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using SharedKernel.Constants;
 
-namespace Laboratory_Management_API.Controllers.StorageStatusQueryController
+namespace Laboratory_Management_API.Controllers.StorageStatusController
 {
     [Route("api/[controller]")]
     [ApiController]

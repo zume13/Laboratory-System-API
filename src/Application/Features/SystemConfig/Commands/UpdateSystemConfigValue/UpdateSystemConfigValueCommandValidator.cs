@@ -6,7 +6,7 @@ namespace Application.Features.SystemConfig.Commands.UpdateSystemConfigValue
     {
         public UpdateSystemConfigValueCommandValidator()
         {
-            RuleFor(x => x.key).NotEmpty().WithMessage("Key required.");
+            RuleFor(x => x.key).NotEmpty().WithMessage("Key is required.");
         }
     }
 }
