@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.LogIn
+namespace Application.Features.Users.Commands.LogIn
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultT<TokenDto>>
     {

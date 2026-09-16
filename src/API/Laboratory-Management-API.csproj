@@ -31,4 +31,8 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\UserController\Query\" />
+  </ItemGroup>
+
 </Project>

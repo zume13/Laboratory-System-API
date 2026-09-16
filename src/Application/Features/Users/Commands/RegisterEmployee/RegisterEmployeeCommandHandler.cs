@@ -7,7 +7,7 @@ using Domain.ValueObjects;
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.RegisterEmployee
+namespace Application.Features.Users.Commands.RegisterEmployee
 {
     public class RegisterEmployeeCommandHandler : IRequestHandler<RegisterEmployeeCommand, Result>
     {

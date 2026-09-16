@@ -2,7 +2,7 @@
 using MediatR;
 using SharedKernel.Shared;
 
-namespace Application.Features.Users.LogIn
+namespace Application.Features.Users.Commands.LogIn
 {
     public record LoginCommand(
         string email,
