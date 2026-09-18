@@ -58,7 +58,7 @@ namespace Laboratory_Management_API.Controllers.AppointmentSlotController
         [HttpGet("get-appointmentslot-daterange")]
         public async Task<IActionResult> GetByDateRange([FromQuery] DateTime from, [FromQuery] DateTime to)
         {
-            var result = await _mediator.Send(new GetAppointmentSlotsByDateRangeQuery(from, to)); -
+            var result = await _mediator.Send(new GetAppointmentSlotsByDateRangeQuery(from, to)); 
             if (result.IsFailure) return BadRequest(result.Error);
             return Ok(result.value);
         }

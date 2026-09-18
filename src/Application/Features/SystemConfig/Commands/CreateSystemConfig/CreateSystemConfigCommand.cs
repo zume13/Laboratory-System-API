@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.SystemConfig.Commands.CreateSystemConfig
 {
-    internal class CreateSystemConfigCommand
-    {
-    }
+    public record CreateSystemConfigCommand(string key, string value) : IRequest<ResultT<Guid>>;
 }

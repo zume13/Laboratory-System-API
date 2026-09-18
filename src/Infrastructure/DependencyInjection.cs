@@ -1,9 +1,12 @@
 ﻿using Application.Abstractions.Auth;
 using Application.Abstractions.Base;
+using Application.Abstractions.Events;
 using Application.Abstractions.FileStorage;
 using Application.Abstractions.Repositories;
 using Domain.Aggregates.Identity.UserProfile;
+using Infrastructure.Events;
 using Infrastructure.Persistence.Database;
+using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
@@ -21,8 +24,9 @@ namespace Infrastructure
                 ?? throw new InvalidOperationException(
                     "Connection string 'DefaultConnection' was not found.");
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(connectionString));
+            services.AddDbContext<ApplicationDbContext>((sp, options) =>
+                options.UseNpgsql(connectionString)
+                       .AddInterceptors(sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>()));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -45,6 +49,10 @@ namespace Infrastructure
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<IFileStorageService, FileStorageService>();
+            services.AddScoped<ConvertDomainEventsToOutboxMessagesInterceptor>();
+            services.AddScoped<IDomainEventDispatcher, DomainEventsDispatcher>();
+            services.AddSingleton<IDomainEventTypeRegistry, DomainEventTypeRegistry>();
+            services.AddScoped<IOutboxMessageSerializer, OutboxMessageSerializer>();
             return services;
         }
     }

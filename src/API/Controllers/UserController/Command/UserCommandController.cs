@@ -1,7 +1,7 @@
 ﻿using Application.Dto;
-using Application.Features.Users.LogIn;
-using Application.Features.Users.RegisterEmployee;
-using Application.Features.Users.RegisterPatient;
+using Application.Features.Users.Commands.LogIn;
+using Application.Features.Users.Commands.RegisterEmployee;
+using Application.Features.Users.Commands.RegisterPatient;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
