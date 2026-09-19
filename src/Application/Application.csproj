@@ -28,6 +28,7 @@
     <Folder Include="Features\StorageStatus\" />
     <Folder Include="Features\SmsGateway\" />
     <Folder Include="Features\Notification\" />
+    <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
 </Project>
