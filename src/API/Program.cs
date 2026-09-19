@@ -19,6 +19,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddBackgroundJobs();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

@@ -2,6 +2,7 @@
 using Application.Aggregates.Laboratory.LaboratoryOrder.Dtos;
 using Application.Features.LabOrder.Dto;
 using Domain.Aggregates.Laboratory.LaboratoryOrder;
+using Domain.Aggregates.Laboratory.LaboratoryOrder.Enums;
 using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +54,21 @@ namespace Infrastructure.Persistence.Repositories
                         ) : null
                     )).ToList()
                 )).FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<List<PendingLabRequestDto>> GetPendingLabRequestsAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.LabOrders
+                .AsNoTracking()
+                .SelectMany(order => order.Requests
+                    .Where(r => r.Status == RequestStatus.Pending)
+                    .Select(r => new PendingLabRequestDto(
+                        r.Id,
+                        order.Id,
+                        order.PatientId,
+                        _dbContext.TestCategories.Where(c => c.Id == r.TestCategoryId).Select(c => c.Name.value).FirstOrDefault()!,
+                        r.CreatedAt)))
+                .ToListAsync(cancellationToken);
         }
     }
 }

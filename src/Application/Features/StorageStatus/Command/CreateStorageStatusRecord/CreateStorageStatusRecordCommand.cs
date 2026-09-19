@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
+using SharedKernel.Shared;
 
 namespace Application.Features.StorageStatus.Command.CreateStorageStatusRecord
 {
-    internal class CreateStorageStatusRecordCommand
-    {
-    }
+    public record CreateStorageStatusRecordCommand(string storageType, decimal capacityGb) : IRequest<ResultT<Guid>>;
 }

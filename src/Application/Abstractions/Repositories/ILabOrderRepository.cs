@@ -9,5 +9,7 @@ namespace Application.Abstractions.Repositories
         Task<List<LaboratoryRequestOrder>> GetAllLabOrdersByPatientIdAsync(Guid patientId, CancellationToken cancellationToken = default);
         Task<LaboratoryRequestOrder?> GetLabOrderWithLabRequestForUpdateAsync(Guid labOrderId, CancellationToken cancellationToken = default);
         Task<LabOrderWithRequestDto?> GetLabOrderWithLabRequestAsync(Guid labOrderId, CancellationToken cancellationToken = default);
+
+        Task<List<PendingLabRequestDto>> GetPendingLabRequestsAsync(CancellationToken cancellationToken = default);
     }
 }

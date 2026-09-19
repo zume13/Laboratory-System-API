@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation;
 
 namespace Application.Features.SystemConfig.Commands.CreateSystemConfig
 {
-    internal class CreateSystemConfigCommandValidator
+    public class CreateSystemConfigCommandValidator : AbstractValidator<CreateSystemConfigCommand>
     {
+        public CreateSystemConfigCommandValidator()
+        {
+            RuleFor(x => x.key).NotEmpty().WithMessage("Key is required.");
+        }
     }
 }

@@ -15,6 +15,8 @@ using Domain.Aggregates.SlotCapacity;
 using Microsoft.EntityFrameworkCore;
 using Domain.Aggregates.Laboratory.TestCategory;
 using Domain.Aggregates.Laboratory.LaboratoryOrder;
+using Infrastructure.Persistence.Outbox;
+using Domain.Aggregates.Otp;
 
 namespace Infrastructure.Persistence.Database
 {
@@ -51,7 +53,11 @@ namespace Infrastructure.Persistence.Database
         public DbSet<Appointment> Appointments => Set<Appointment>();
         // AppointmentReminder intentionally has no DbSet — only reachable via Appointment.Reminders.
 
+        // Outbox
+        public DbSet<OutBoxMessage> OutboxMessages => Set<OutBoxMessage>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+        public DbSet<Otp> EmailVerificationOtps => Set<Otp>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

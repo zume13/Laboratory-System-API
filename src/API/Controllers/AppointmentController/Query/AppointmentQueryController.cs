@@ -1,12 +1,6 @@
-﻿using Application.Features.Appointments.Commands.AddAppointmentTest;
-using Application.Features.Appointments.Commands.ApproveAppointmentTest;
-using Application.Features.Appointments.Commands.CancelAppointment;
-using Application.Features.Appointments.Commands.CancelAppointmentTest;
-using Application.Features.Appointments.Commands.CreateOnlineAppointment;
-using Application.Features.Appointments.Commands.CreateWalkInAppointment;
-using Application.Features.Appointments.Commands.MarkAppointmentNoShow;
-using Application.Features.Appointments.Commands.RemoveAppointmentTest;
-using Application.Features.Appointments.Commands.RescheduleAppointment;
+﻿using Application.Features.Appointments.Queries.GetAppointmentWithTests;
+using Application.Features.Appointments.Queries.GetAppointmentScheduleSummary;
+using Application.Features.Appointments.Queries.GetPastDueUnresolvedAppointments;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,5 +20,34 @@ namespace Laboratory_Management_API.Controllers.AppointmentController.Command
             _mediator = mediator;
         }
 
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("get-tests/{appointmentId}")]
+        public async Task<IActionResult> GetById(Guid appointmentId)
+        {
+            var result = await _mediator.Send(new GetAppointmentWithTestsQuery(appointmentId));
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("schedule-summary/{date}")]
+        public async Task<IActionResult> GetScheduleSummary(DateTime date)
+        {
+            var result = await _mediator.Send(new GetAppointmentScheduleSummaryQuery(date));
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("past-due-unresolved/{asOf}")]
+        public async Task<IActionResult> GetPastDueUnresolved(DateTime asOf)
+        {
+            var result = await _mediator.Send(new GetPastDueUnresolvedAppointmentsQuery(asOf));
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
+        }
     }
 }

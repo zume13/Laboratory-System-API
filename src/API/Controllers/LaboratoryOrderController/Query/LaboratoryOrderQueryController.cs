@@ -1,5 +1,6 @@
 ﻿using Application.Features.LabOrder.Queries.GetAllLabOrdersByPatientId;
 using Application.Features.LabOrder.Queries.GetLabOrderByPatientId;
+using Application.Features.LabOrder.Queries.GetPendingLabRequests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,16 @@ namespace Laboratory_Management_API.Controllers.LaboratoryRequestOrderController
             if (result.IsFailure)
                 return BadRequest(result.Error);
 
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("pending-requests")]
+        public async Task<IActionResult> GetPendingRequests()
+        {
+            var result = await _mediator.Send(new GetPendingLabRequestsQuery());
+            if (result.IsFailure) return BadRequest(result.Error);
             return Ok(result.value);
         }
     }
