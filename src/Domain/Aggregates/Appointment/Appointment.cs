@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.Appointment.Enums;
+using Domain.Aggregates.Appointment.Events;
 using Domain.Aggregates.Communications.Enums;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
@@ -83,6 +84,8 @@ namespace Domain.Aggregates.Appointment
                 appointment._tests.Add(test.value);
             }
 
+            appointment.RaiseDomainEvent(new AppointmentBookedEvent(appointment.Id, appointment.PatientId, appointment.AppointmentSlotId));
+
             return appointment;
         }
 
@@ -105,6 +108,8 @@ namespace Domain.Aggregates.Appointment
                 return AppointmentErrors.InvalidStatus;
 
             Status = AppointmentStatus.Cancelled;
+
+            RaiseDomainEvent(new AppointmentCancelledEvent(Id, PatientId));
 
             return Result.Success();
         }
