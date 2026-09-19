@@ -8,21 +8,16 @@ namespace SharedKernel.DomainEvent
             public const string UserCreated = "UserCreated";
         }
 
-        public static class CommunicationEventNames
+        public static class LabOrderEventNames
         {
-            public const string AnnouncementCreated = "AnnouncementCreated";
-            public const string GradeConsultationStarted = "GradeConsultationStarted";
+            public const string LabOrderCreated = "LabOrder.Created";
+            public const string LabResultReleased = "LabResult.Released";
         }
 
-        public static class CourseEventNames
+        public static class AppointmentEventNames
         {
-            public const string LessonUploaded = "LessonUploaded";
-            public const string CourseArchived = "CourseArchived";
-        }
-
-        public static class AssignmentEventNames
-        {
-            public const string AssignmentCreated = "AssignmentCreated";
+            public const string AppointmentBooked = "Appointment.Booked";
+            public const string AppointmentCancelled = "Appointment.Cancelled";
         }
     }
 }
