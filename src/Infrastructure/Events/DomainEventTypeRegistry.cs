@@ -1,4 +1,6 @@
 ﻿using Application.Abstractions.Events;
+using Domain.Aggregates.Appointment.Events;
+using Domain.Aggregates.Laboratory.LaboratoryOrder.Events;
 using SharedKernel.DomainEvent;
 using SharedKernel.Shared;
 
@@ -6,8 +8,13 @@ namespace Infrastructure.Events
 {
     public class DomainEventTypeRegistry : IDomainEventTypeRegistry
     {
-       // TODO event mapping
-        private readonly Dictionary<string, Type> _map = new();
+        private readonly Dictionary<string, Type> _map = new()
+        {
+            [DomainEventsNames.LabOrderEventNames.LabOrderCreated] = typeof(LabOrderCreatedEvent),
+            [DomainEventsNames.LabOrderEventNames.LabResultReleased] = typeof(LabResultReleasedEvent),
+            [DomainEventsNames.AppointmentEventNames.AppointmentBooked] = typeof(AppointmentBookedEvent),
+            [DomainEventsNames.AppointmentEventNames.AppointmentCancelled] = typeof(AppointmentCancelledEvent),
+        };
 
         public ResultT<Type> Resolve(string eventName)
         {

@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.Laboratory.LaboratoryOrder.Enums;
+using Domain.Aggregates.Laboratory.LaboratoryOrder.Events;
 using Domain.ValueObjects;
 using SharedKernel.Primitives;
 using SharedKernel.Shared;
@@ -30,10 +31,14 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
                     return GeneralErrors.General.Empty(nameof(patientId)); 
 
                 if (appointmentId == Guid.Empty) 
-                    return GeneralErrors.General.Empty(nameof(appointmentId)); 
-            
-                return new LaboratoryRequestOrder(Guid.NewGuid(), patientId, appointmentId); 
-            } 
+                    return GeneralErrors.General.Empty(nameof(appointmentId));
+
+                var order = new LaboratoryRequestOrder(Guid.NewGuid(), patientId, appointmentId);
+
+                order.RaiseDomainEvent(new LabOrderCreatedEvent(order.Id, order.PatientId, order.AppointmentId));
+
+                return order;
+        } 
 
         /// <summary> /// Creates a laboratory request as part of this order. /// 
         /// LabRequest is an entity owned by this aggregate. /// 
@@ -149,7 +154,14 @@ namespace Domain.Aggregates.Laboratory.LaboratoryOrder
             if (request is null)
                 return LaboratoryOrderErrors.Request.NotFound(requestId);
 
-            return request.ReleaseResult();
+            var result = request.ReleaseResult();
+
+            if (result.IsFailure)
+                return result.Error;
+
+            RaiseDomainEvent(new LabResultReleasedEvent(Id, PatientId, request.Id, request.TestCategoryId));
+
+            return Result.Success();
         }
 
         public Result CompleteRequest(Guid requestId)
