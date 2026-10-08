@@ -3,6 +3,7 @@ using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotById;
 using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotsByDate;
 using Application.Features.AppointmentSlots.Queries.GetAppointmentSlotsByDateRange;
 using Application.Features.AppointmentSlots.Queries.GetAvailableAppointmentSlots;
+using Application.Features.AppointmentSlots.Queries.GetSlotUtilizationByDate;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,16 @@ namespace Laboratory_Management_API.Controllers.AppointmentSlotController
         public async Task<IActionResult> GetByDateRange([FromQuery] DateTime from, [FromQuery] DateTime to)
         {
             var result = await _mediator.Send(new GetAppointmentSlotsByDateRangeQuery(from, to)); 
+            if (result.IsFailure) return BadRequest(result.Error);
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("get-appointmentslot-utilization/{date}")]
+        public async Task<IActionResult> GetUtilization(DateTime date)
+        {
+            var result = await _mediator.Send(new GetSlotUtilizationByDateQuery(date));
             if (result.IsFailure) return BadRequest(result.Error);
             return Ok(result.value);
         }

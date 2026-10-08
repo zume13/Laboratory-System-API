@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Base;
+using Application.Dto;
 using Application.Features.LabOrder.Dto;
 using Domain.Aggregates.Laboratory.LaboratoryOrder;
 
@@ -11,5 +12,7 @@ namespace Application.Abstractions.Repositories
         Task<LabOrderWithRequestDto?> GetLabOrderWithLabRequestAsync(Guid labOrderId, CancellationToken cancellationToken = default);
 
         Task<List<PendingLabRequestDto>> GetPendingLabRequestsAsync(CancellationToken cancellationToken = default);
+
+        Task<List<TestCategoryPopularityDto>> GetTestCategoryPopularityAsync(CancellationToken cancellationToken = default);
     }
 }
