@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Aggregates.Laboratory.LaboratoryOrder.Dtos;
+using Application.Dto;
 using Application.Features.LabOrder.Dto;
 using Domain.Aggregates.Laboratory.LaboratoryOrder;
 using Domain.Aggregates.Laboratory.LaboratoryOrder.Enums;
@@ -68,6 +69,20 @@ namespace Infrastructure.Persistence.Repositories
                         order.PatientId,
                         _dbContext.TestCategories.Where(c => c.Id == r.TestCategoryId).Select(c => c.Name.value).FirstOrDefault()!,
                         r.CreatedAt)))
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<TestCategoryPopularityDto>> GetTestCategoryPopularityAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.LabOrders
+                .AsNoTracking()
+                .SelectMany(order => order.Requests)
+                .GroupBy(r => r.TestCategoryId)
+                .Select(g => new TestCategoryPopularityDto(
+                    g.Key,
+                    _dbContext.TestCategories.Where(c => c.Id == g.Key).Select(c => c.Name.value).FirstOrDefault()!,
+                    g.Count()))
+                .OrderByDescending(x => x.requestCount)
                 .ToListAsync(cancellationToken);
         }
     }
