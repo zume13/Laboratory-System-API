@@ -41,9 +41,9 @@ namespace Application.Features.LabOrder.Commands.UploadLabResult
 
             if (pdfPath.IsFailure)
             {
-                var deleteFile = _service.DeleteFile(pdfPath.value.value);
+                var deleteFile = _service.DeleteFile(uploadFile.value);
 
-                if(deleteFile.IsFailure)
+                if (deleteFile.IsFailure)
                     return deleteFile.Error;
 
                 return pdfPath.Error;
