@@ -2,6 +2,7 @@
 using Application.Features.TestCategories.Queries.GetActiveTestCategories;
 using Application.Features.TestCategories.Queries.GetAllTestCategories;
 using Application.Features.TestCategories.GetTestCategoryById;
+using Application.Features.TestCategories.Queries.GetTestCategoryPopularity;
 
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -58,6 +59,16 @@ namespace Laboratory_Management_API.Controllers.TestCategoryController
             if (result.IsFailure)
                 return BadRequest(result.Error);
 
+            return Ok(result.value);
+        }
+
+        [EnableRateLimiting(SystemConstants.RateLimits.perUser)]
+        [Authorize(Policy = SystemConstants.AuthPolicies.companyPersonnel)]
+        [HttpGet("popular")]
+        public async Task<IActionResult> GetPopularity()
+        {
+            var result = await _mediator.Send(new GetTestCategoryPopularityQuery());
+            if (result.IsFailure) return BadRequest(result.Error);
             return Ok(result.value);
         }
     }
